@@ -3,27 +3,21 @@
 @import 'ag-grid-community/styles/ag-grid.css';
 /* Quartz Theme Specific CSS */
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
-/* BASIC COLORS
-Kleur donker roze: #B16F6E
-Banner kleur lichtroze: #FEEBF1 */
+/* 
+Pure white: #FFFFFF
+Deep Cynober: #E54758
+Deep Cynober (hover): #d03847
+Sky Blue: #6BC7F0
+Navy Blue: #191825
+*/
 
 .navbar.navbar-expand-lg.navbar-light {
-    background-color: #feebf1;
+    background-color: #FFFFFF;
 }
 
-
-/* styling for list of ingredients coming from the stock-items  */
-.ingredients-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-/* width of the logo in the navbar */
-img.logo {
-    width: 4rem;
-}
-
-th {
-    font-size: large;
+.body {
+    font-family: 'Assistant', sans-serif;
 }

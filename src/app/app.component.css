@@ -1,25 +1,35 @@
+/* 
+Pure white: #FFFFFF
+Deep Cynober: #E54758
+Deep Cynober (hover): #d03847
+Sky Blue: #6BC7F0
+Navy Blue: #191825
+*/
+
 .btn-secondary {
     --bs-btn-color: black;
     --bs-btn-bg: none;
     --bs-btn-border-color: none;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #B16F6E;
+    --bs-btn-hover-bg: #191825;
     --bs-btn-hover-border-color: none;
-    --bs-btn-focus-shadow-rgb: 130,138,145;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #B16F6E;
+    --bs-btn-active-bg: #191825;
     --bs-btn-active-border-color: none;
     --bs-btn-active-shadow: none;
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 600;
 }
 
-.dropdown-divider{
+.dropdown-divider {
     border-top: 2px solid var(--bs-dropdown-divider-bg) !important;
 }
 
 .dropdown-menu {
-    --bs-dropdown-link-active-bg: #B16F6E;
+    --bs-dropdown-link-active-bg: #191825;
     --bs-dropdown-min-width: 8rem;
 }

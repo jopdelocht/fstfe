@@ -1,13 +1,22 @@
+/* 
+Pure white: #FFFFFF
+Deep Cynober: #E54758
+Deep Cynober (hover): #d03847
+Sky Blue: #6BC7F0
+Navy Blue: #191825
+*/
+
+
 .btn-primary {
-    --bs-btn-color: black;
-    --bs-btn-bg: #efb8c9;
+    --bs-btn-color: white;
+    --bs-btn-bg: #E54758;
     --bs-btn-border-color: none;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #B16F6E;
+    --bs-btn-hover-bg: #d03847;
     --bs-btn-hover-border-color: none;
-    --bs-btn-focus-shadow-rgb: 130,138,145;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #B16F6E;
+    --bs-btn-active-bg: #d03847;
     --bs-btn-active-border-color: none;
     --bs-btn-active-shadow: none;
     --bs-btn-disabled-color: none;
@@ -16,35 +25,63 @@
 }
 
 .btn-secondary {
-    --bs-btn-color: black;
-    --bs-btn-bg: #efb8c9;
+    --bs-btn-color: white;
+    --bs-btn-bg: #E54758;
     --bs-btn-border-color: none;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #B16F6E;
+    --bs-btn-hover-bg: #d03847;
     --bs-btn-hover-border-color: none;
-    --bs-btn-focus-shadow-rgb: 130,138,145;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #B16F6E;
+    --bs-btn-active-bg: #d03847;
     --bs-btn-active-border-color: none;
     --bs-btn-active-shadow: none;
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
-    
+
 }
 
-.inputClass{
-    background-color: #FEEBF1;
+.inputClass {
+    background-color: #FFFFFF;
     padding: 40px;
     border-radius: 90px;
 }
 
-body{
+
+.input-group {
+    display: flex;
+    align-items: center;
+    /* Aligns items vertically in the center */
+}
+
+.form-control {
+    flex: 1;
+    /* Allows the input field to take up the remaining space */
+    margin-right: 10px;
+    /* Adds some space between the input field and the button */
+    font-family: 'Assistant', sans-serif;
+}
+
+.form-control:focus {
+    border-color: #6BC7F0;
+    box-shadow: 0 0 0 0.2rem rgba(107, 200, 240, 0.329);
+    /* rgba(107, 199, 240, 1) */
+}
+
+body {
     text-align: center;
 }
 
-h1{
-    text-align: center;
-    margin: 3vh;
-    color: #B16F6E;
+h3 {
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+}
+
+.box {
+    position: absolute;
+    width: 20rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

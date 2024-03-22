@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="row">
       <div class="col-md-12">
         <h1>Registreren</h1>
@@ -17,4 +17,16 @@
             </div>
         </div>
     </div>
+  </div> -->
+
+<div class="box">
+  <h3>Registreren</h3>
+  <input type="text" placeholder="Gebruikersnaam" class="form-control mb-2" [(ngModel)]="username">
+  <input type="email" placeholder="E-mail" class="form-control mb-2" [(ngModel)]="email" required email>
+  <div class="input-group">
+    <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Wachtwoord" class="form-control"
+      [(ngModel)]="password">
+    <button class="btn btn-primary" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye-slash"></i></button>
   </div>
+  <button class="btn btn-secondary mt-2" (click)="onSubmit()" type="submit">Register</button>
+</div>
