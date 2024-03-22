@@ -16,6 +16,7 @@ import { SupplierseditComponent } from './suppliersedit/suppliersedit.component'
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { OrdereditComponent } from './orderedit/orderedit.component';
+import { GametableComponent } from './gametable/gametable.component';
 
 // Auth guard and login component
 import { authGuard } from './auth.guard';
@@ -103,5 +104,9 @@ export const routes: Routes = [
         path: 'orderedit',
         canActivate: [authGuard],
         component: OrdereditComponent
+    },
+    {
+        path: 'gametable',
+        component: GametableComponent
     }
 ];
