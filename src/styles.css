@@ -21,3 +21,8 @@ Navy Blue: #191825
 .body {
     font-family: 'Assistant', sans-serif;
 }
+
+::selection {
+    color: white;
+    background: #6BC7F0;
+}
