@@ -1,0 +1,29 @@
+/* Imports for Grid CSS */
+/* Core Grid CSS */
+@import 'ag-grid-community/styles/ag-grid.css';
+/* Quartz Theme Specific CSS */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+/* BASIC COLORS
+Kleur donker roze: #B16F6E
+Banner kleur lichtroze: #FEEBF1 */
+
+.navbar.navbar-expand-lg.navbar-light {
+    background-color: #feebf1;
+}
+
+
+/* styling for list of ingredients coming from the stock-items  */
+.ingredients-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* width of the logo in the navbar */
+img.logo {
+    width: 4rem;
+}
+
+th {
+    font-size: large;
+}

@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 leftcontainer mt-2">
+            <div id="header" class="text-center m-2">
+                <h3>Receptberekening</h3>
+            </div>
+
+            <div class="input-group m-2">
+                <span class="input-group-text" id="inputGroup-sizing-default"><label
+                        for="stockName">Klant</label></span>
+                <select type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                    class="form-control" [(ngModel)]="myClient">
+                    @for (client of clients; track client.id) {
+                    <option value [value]="client.id">{{ client.lastname }} {{client.firstname}}</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group m-2">
+                <span class="input-group-text" id="inputGroup-sizing-default"><label
+                        for="stockDate">Leverdatum</label></span>
+                <input type="date" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default" [(ngModel)]="deliveryDate" placeholder="Vervaldatum">
+            </div>
+            <div class="input-group m-2">
+                <span class="input-group-text" id="inputGroup-sizing-default"><label
+                        for="stockName">Recept</label></span>
+                <select type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                    class="form-control" [(ngModel)]="myRecipe">
+                    <option *ngFor="let recipename of getUniqueRecipes()" [value]="recipename">
+                        {{ recipename }}</option>
+                </select>
+                <button class="btn btn-primary ms-2" type="button" id="button-addon2"
+                    (click)="filteredRecipes = checkForRecipeIncludes()">Zoek</button>
+            </div>
+            <div *ngIf="firstFilteredRecipe">
+                <h4>{{ firstFilteredRecipe.recipename }} - {{ firstFilteredRecipe.basevalue }} {{
+                    firstFilteredRecipe.measurement}}</h4>
+            </div>
+            <div id="filteredrecipelist">
+                @for(filteredRecipe of filteredRecipes; track filteredRecipe.id) {
+                <li>{{ filteredRecipe.productname }} - {{ filteredRecipe.quantity }} {{ filteredRecipe.measurement}}
+                </li>
+                }
+            </div>
+            <div class="input-group m-2">
+                <span class="input-group-text" id="inputGroup-sizing-default"><label for="stockName">Nieuwe<br>hoeveelheid</label></span>
+                <input type="number" class="form-control" [(ngModel)]="myQuantity">
+                <button class="btn btn-primary ms-2" type="button" id="button-addon2"
+                    (click)="calculateNewValues(checkForRecipeIncludes())">Bereken</button>
+            </div>
+            <div *ngIf="firstCalculatedValue">
+                <h4>{{ firstCalculatedValue.recipename }} - {{ myQuantity }} {{
+                    firstCalculatedValue.measurement}}</h4>
+            </div>
+            <div id="newrecipelist">
+                @for(calculatedValue of calculatedValues; track calculatedValue.id) {
+                <li>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="postOrder(calculatedValue)">+</button>
+                    {{ calculatedValue.productname }} - {{calculatedValue.quantity }} {{ calculatedValue.measurement}}
+                </li>
+                }
+            </div>
+            <div>
+                <button class="btn btn-danger ms-2" type="button" id="button-addon2"
+                    (click)="deleteSelectedRowFromStock()">Verwijder uit stock</button>
+            </div>
+
+        </div>
+        <div class="col-md-8">
+            <!-- AG Grid version of the table -->
+            <ag-grid-angular class="ag-theme-quartz mt-2" style="height:85vh;" [rowData]="rowData"
+                [columnDefs]="colDefs" [pagination]="true" (gridReady)="onGridReady($event)"
+                [paginationAutoPageSize]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+
+</div>

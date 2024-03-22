@@ -1,0 +1,114 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <a class="navbar-brand" href="#"><img src="../../assets/logo.png" alt="logo" class="logo"></a>
+      <!-- the logo is on the left side of the navbar, the ms auto moves the rest of the items to the right -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item m-1">
+          <a class="btn btn-secondary" href=""><i class="m-1 fas fa-house"></i>Home</a>
+        </li>
+        <div class="dropdown m-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-scroll"></i>
+            Bestellingen
+          </button>
+          <ul class="dropdown-menu stock">
+            <li><a class="dropdown-item" href="/orders"><i class="fa-solid fa-eye m-1"></i>Overzicht</a></li>
+            <li><a class="dropdown-item" href="/orderedit"><i class="fa-solid fa-trash m-1"></i>Verwijderen</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown m-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-cubes"></i>
+            Stock
+          </button>
+          <ul class="dropdown-menu stock">
+            <li><a class="dropdown-item" href="/stock"><i class="fa-solid fa-eye m-1"></i>Overzicht</a></li>
+            <li><a class="dropdown-item" href="/stockadd"><i class="fa-solid fa-plus m-1"></i>Aanvullen</a></li>
+            <li><a class="dropdown-item" href="/stockedit"><i class="fa-solid fa-pencil m-1"></i>Wijzigen</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown m-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-layer-group"></i>
+            Assortiment
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item">PRODUCTEN</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="/products"><i class="fa-solid fa-eye m-1"></i>Producten</a></li>
+            <li><a class="dropdown-item" href="/productsadd"><i class="fa-solid fa-plus m-1"></i>Toevoegen</a></li>
+            <li><a class="dropdown-item" href="/productsedit"><i class="fa-solid fa-pencil m-1"></i>Wijzigen</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item">INGREDIËNTEN</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="/ingredient"><i class="fa-solid fa-eye m-1"></i>Ingrediënten</a></li>
+            <li><a class="dropdown-item" href="/ingredientadd"><i class="fa-solid fa-plus m-1"></i>Toevoegen</a></li>
+            <li><a class="dropdown-item" href="/ingredientedit"><i class="fa-solid fa-pencil m-1"></i>Wijzigen</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item">LEVERANCIERS</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="/suppliers"><i class="fa-solid fa-eye m-1"></i>Leveranciers</a></li>
+            <li><a class="dropdown-item" href="/suppliersadd"><i class="fa-solid fa-plus m-1"></i>Toevoegen</a></li>
+            <li><a class="dropdown-item" href="/suppliersedit"><i class="fa-solid fa-pencil m-1"></i>Wijzigen</a></li>
+          </ul>
+        </div>
+
+        <div *ngIf="!isLoggedIn" class="dropdown m-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="m-1 fas fa-user"></i>
+            Account
+          </button>
+          <ul class="dropdown-menu">
+            <li class="nav-item">
+              <a class="dropdown-item" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="dropdown-item" href="/register">Registreren</a>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="isLoggedIn" class="dropdown m-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="m-1 fas fa-user"></i>
+            <span *ngIf="isLoggedIn">{{username}}</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li *ngIf="isLoggedIn" class="nav-item">
+              <button class="dropdown-item" (click)="logout()">Logout</button>
+            </li>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
