@@ -19,6 +19,12 @@ export class GametableComponent {
   chosenSet: any = "default";
   // Keeping track of the selected set of cards coming from the select dropdown
   selectedSet: any[] = [];
+  // Cardvalues for testgame
+  myCard: number = 0;
+  cardBot1: number = 0;
+  cardBot2: number = 0;
+  objectBot1: any;
+  objectBot2: any;
 
   regularCards = [
     {
@@ -150,19 +156,19 @@ export class GametableComponent {
     return item.id;
   }
 
+  // Changes the selected card state to true, changes all other cards state to false and stores value in myCard
   onCardClick(card: any): void {
-    console.log("Clicked on card", card.id);
-    // loop through cards and change state to false
-    this.fibonacciCards.forEach((c: any) => {
+    this.selectedSet.forEach((c: any) => {
       c.state = false;
     });
     card.state = true;
-    // card.state = !card.state; // Toggle the state
-    console.log("Card state toggled to", card.state);
-    console.log("Value of the card:", card.value);
+    this.myCard = card.value;
+    console.log("My card:", this.myCard);
+
   }
+  // oninit changes all states to false
   ngOnInit(): void {
-    for (let card of this.regularCards) {
+    for (let card of this.regularCards && this.fibonacciCards) {
       card.state = false;
     }
   }
@@ -173,7 +179,16 @@ export class GametableComponent {
     } else if (chosenSet === "fibonacci") {
       this.selectedSet = this.fibonacciCards;
     }
-    console.log(this.selectedSet); // Ensure this is after the update
+  }
+
+
+  startGame(myCard: number, cardBot1: number, cardBot2: number, objectBot1: any, objectBot2: any) {
+    objectBot1 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
+    objectBot2 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
+    cardBot1 = objectBot1.value;
+    cardBot2 = objectBot2.value;
+    console.log("Your number:", myCard, "Bot one's card:", cardBot1, "Bot two's card:", cardBot2);
+    return (this.myCard, cardBot1, this.cardBot2);
   }
 
 }

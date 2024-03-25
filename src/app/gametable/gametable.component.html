@@ -11,13 +11,48 @@
             </div>
         </div> -->
 <div class="container">
-    <h1>Game Table</h1>
-    <div class="row container">
+    <div class="row">
+        <div class="top-container">
+            <div class="col-md-2">
+                <div class="d-grid d-md-flex justify-content-md-center">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="d-grid d-md-flex justify-content-md-center">
+                    <div class="card task">
+                        <div class="card-body">
+                            <h5 class="card-title">TASK-9998 - [BACK][RESEARCH]</h5>
+                            <p class="card-text">Method/trans/user does not work with a valid
+                                access token</p>
+                            <a href="#" class="card-link">Clickup</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="d-grid d-md-flex justify-content-md-center">
+                    <i class="fa-solid fa-forward"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container bottom">
+    <div class="row">
         <div class="col-md-4">
+            <div class="card" style="width: 7rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.cardBot1}}</h5>
+                    <p class="card-text">Player 1</p>
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
             <div class="d-grid d-md-flex justify-content-md-center">
-                <button type="button" class="btn btn-primary btn-lg">Reveal cards</button>
+                <button type="button" class="btn btn-primary btn-lg"
+                    (click)="startGame(myCard, cardBot1, cardBot2, objectBot1, objectBot2)">Start
+                    game</button>
             </div>
             <h3>Choose your set</h3>
             <select class="form-select" [(ngModel)]="chosenSet" (change)="updateSelectedCards(chosenSet)">
@@ -28,15 +63,22 @@
             <h3>Pick your points</h3>
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 <div *ngFor="let card of selectedSet; let i = index; trackBy: trackById" class="col">
-                    <div class="card h-100" [ngClass]="{ 'active-card': card.state }" (click)="onCardClick(card)">
+                    <div class="card playing h-100" [ngClass]="{ 'active-card': card.state }"
+                        (click)="onCardClick(card)">
                         <div class="card-body">
-                            <p class="card-text">{{ card.value }}</p>
+                            <p class="card-text">{{card.value }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
+            <div class="card" style="width: 7rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{cardBot1}}</h5>
+                    <p class="card-text">Player 2</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
