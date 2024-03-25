@@ -44,14 +44,13 @@
             <div class="card" style="width: 7rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{this.cardBot1}}</h5>
-                    <p class="card-text">Player 1</p>
+                    <p class="card-text">Bot 1</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="d-grid d-md-flex justify-content-md-center">
-                <button type="button" class="btn btn-primary btn-lg"
-                    (click)="startGame(myCard, cardBot1, cardBot2, objectBot1, objectBot2)">Start
+                <button type="button" class="btn btn-primary btn-lg" (click)="startGame()">Start
                     game</button>
             </div>
             <h3>Choose your set</h3>
@@ -75,8 +74,8 @@
         <div class="col-md-4">
             <div class="card" style="width: 7rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{cardBot1}}</h5>
-                    <p class="card-text">Player 2</p>
+                    <h5 class="card-title">{{cardBot2}}</h5>
+                    <p class="card-text">Bot 2</p>
                 </div>
             </div>
         </div>

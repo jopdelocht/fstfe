@@ -182,13 +182,11 @@ export class GametableComponent {
   }
 
 
-  startGame(myCard: number, cardBot1: number, cardBot2: number, objectBot1: any, objectBot2: any) {
-    objectBot1 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
-    objectBot2 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
-    cardBot1 = objectBot1.value;
-    cardBot2 = objectBot2.value;
-    console.log("Your number:", myCard, "Bot one's card:", cardBot1, "Bot two's card:", cardBot2);
-    return (this.myCard, cardBot1, this.cardBot2);
+  startGame() {
+    this.objectBot1 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
+    this.objectBot2 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
+    this.cardBot1 = this.objectBot1.value;
+    this.cardBot2 = this.objectBot2.value;
   }
 
 }
