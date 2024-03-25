@@ -3,7 +3,6 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-gametable',
   standalone: true,
@@ -17,6 +16,9 @@ export class GametableComponent {
 
   myCards: any;
   selectedCard: any; // Keep track of the selected card
+  chosenSet: any = "default";
+  // Keeping track of the selected set of cards coming from the select dropdown
+  selectedSet: any[] = [];
 
   regularCards = [
     {
@@ -165,5 +167,13 @@ export class GametableComponent {
     }
   }
 
+  updateSelectedCards(chosenSet: any) {
+    if (chosenSet === "regular") {
+      this.selectedSet = this.regularCards;
+    } else if (chosenSet === "fibonacci") {
+      this.selectedSet = this.fibonacciCards;
+    }
+    console.log(this.selectedSet); // Ensure this is after the update
+  }
 
 }

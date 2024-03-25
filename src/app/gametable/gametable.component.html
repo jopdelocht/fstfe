@@ -12,15 +12,23 @@
         </div> -->
 <div class="container">
     <h1>Game Table</h1>
-    <div class="row">
+    <div class="row container">
         <div class="col-md-4">
         </div>
         <div class="col-md-4">
+            <div class="d-grid d-md-flex justify-content-md-center">
+                <button type="button" class="btn btn-primary btn-lg">Reveal cards</button>
+            </div>
+            <h3>Choose your set</h3>
+            <select class="form-select" [(ngModel)]="chosenSet" (change)="updateSelectedCards(chosenSet)">
+                <option value="default" disabled>Set of cards:</option>
+                <option value="regular">Regular</option>
+                <option value="fibonacci">Fibonacci</option>
+            </select>
+            <h3>Pick your points</h3>
             <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div *ngFor="let card of fibonacciCards; let i = index; trackBy: trackById" class="col">
-                    <div class="card h-100"
-                        [ngStyle]="{ 'background-color': card.state ? '#6BC7F0' : 'white', 'color': card.state ? 'white' : 'black' }"
-                        (click)="onCardClick(card)">
+                <div *ngFor="let card of selectedSet; let i = index; trackBy: trackById" class="col">
+                    <div class="card h-100" [ngClass]="{ 'active-card': card.state }" (click)="onCardClick(card)">
                         <div class="card-body">
                             <p class="card-text">{{ card.value }}</p>
                         </div>

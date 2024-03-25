@@ -32,4 +32,5 @@ Navy Blue: #191825
 .dropdown-menu {
     --bs-dropdown-link-active-bg: #191825;
     --bs-dropdown-min-width: 8rem;
+    font-family: 'Assistant', sans-serif;
 }
