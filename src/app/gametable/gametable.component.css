@@ -111,6 +111,20 @@ a.card-link {
     align-items: center;
 }
 
+.leftcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.rightcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
 .fa-solid {
     font-size: 2rem;
 }
