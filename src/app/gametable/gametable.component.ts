@@ -189,4 +189,8 @@ export class GametableComponent {
     this.cardBot2 = this.objectBot2.value;
   }
 
+  locationReload() {
+    window.location.reload();
+  }
+
 }

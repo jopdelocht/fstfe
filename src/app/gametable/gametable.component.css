@@ -96,6 +96,7 @@ a.card-link {
 .card.playing:hover {
     cursor: pointer;
     background-color: #E54758;
+    color: white;
 }
 
 /* Space between playing cards */
@@ -127,4 +128,14 @@ a.card-link {
 
 .fa-solid {
     font-size: 2rem;
+}
+
+.fa-rotate-right:hover {
+    cursor: pointer;
+    color: #E54758;
+}
+
+.fa-forward:hover {
+    cursor: pointer;
+    color: #E54758;
 }
