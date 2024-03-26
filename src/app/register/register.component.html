@@ -29,9 +29,10 @@
     <button class="btn btn-primary mb-2" (click)="togglePasswordVisibility()"><i
         class="fa-solid fa-eye-slash"></i></button>
   </div>
-  <div class="d-flex justify-content-between">
-    <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Terug naar login</a>
+  <div class="d-flex justify-content-end">
     <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Registreren</button>
   </div>
-
+  <div class="d-flex justify-content-center mt-5">
+    <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Terug naar login</a>
+  </div>
 </div>

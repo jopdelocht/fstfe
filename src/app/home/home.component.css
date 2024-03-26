@@ -14,12 +14,6 @@ h1 {
     font-family: 'Assistant';
 }
 
-img {
-    max-width: 15%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 .btn-secondary {
     --bs-btn-color: white;
