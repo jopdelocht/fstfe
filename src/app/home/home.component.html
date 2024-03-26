@@ -3,4 +3,7 @@
 </div>
 <div *ngIf="!isLoggedIn">
     <h1>Welkom bij Festimate!</h1>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button class="btn btn-secondary mt-2" type="submit" (click)="goToLogin()">Login</button>
+    </div>
 </div>
