@@ -24,12 +24,14 @@
   <input type="text" placeholder="Gebruikersnaam" class="form-control mb-2" [(ngModel)]="username">
   <input type="email" placeholder="E-mail" class="form-control mb-2" [(ngModel)]="email" required email>
   <div class="input-group">
-    <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Wachtwoord" class="form-control"
+    <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Wachtwoord" class="form-control mb-2"
       [(ngModel)]="password">
-    <button class="btn btn-primary" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye-slash"></i></button>
+    <button class="btn btn-primary mb-2" (click)="togglePasswordVisibility()"><i
+        class="fa-solid fa-eye-slash"></i></button>
   </div>
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button class="btn btn-secondary mt-2" (click)="onSubmit()" type="submit">Registreer</button>
+  <div class="d-flex justify-content-between">
+    <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Terug naar login</a>
+    <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Registreren</button>
   </div>
 
 </div>

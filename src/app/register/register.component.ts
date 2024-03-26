@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 // services
 import { UserService } from '../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
-
+// routing
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -22,8 +23,8 @@ export class RegisterComponent {
 
   }
 
-  ngOnInit(){
-    this.userService.getUsers()    
+  ngOnInit() {
+    this.userService.getUsers()
   }
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
@@ -37,19 +38,19 @@ export class RegisterComponent {
     // check if all fields are filled
     if (!this.username || !this.password || !this.email) {
       this.toastr.error('Vul alle velden in', 'Error');
-    }else{
+    } else {
       // check if email is valid (containing @ and .)
       if (this.email.includes("@") === false || this.email.includes(".") === false) {
-       this.toastr.error('Voer een geldig email-adres in', 'Error');
-      }else{
+        this.toastr.error('Voer een geldig email-adres in', 'Error');
+      } else {
         // call method to register from userservice
-      this.userService.register(this.username, this.password, this.email);
+        this.userService.register(this.username, this.password, this.email);
 
-      // clear the fields;
-      this.username = '';
-      this.password = '';
-      this.email = '' ;
-      }   
+        // clear the fields;
+        this.username = '';
+        this.password = '';
+        this.email = '';
+      }
     }
   }
 }

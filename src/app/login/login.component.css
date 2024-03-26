@@ -85,3 +85,15 @@ h3 {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+a {
+    color: #191825;
+    text-decoration: none;
+    font-family: 'Assistant';
+    font-size: 0.9rem;
+    padding-left: 1px;
+}
+
+a:hover {
+    color: #6BC7F0;
+}
