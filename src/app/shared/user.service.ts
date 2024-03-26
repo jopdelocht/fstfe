@@ -11,7 +11,7 @@ export class UserService {
   constructor(private router: Router, private toastr: ToastrService) { }
 
   // Put Users API Endpoint URL in constant
-  userURL: string = 'http://localhost:8000/api/users/';
+  userURL: string = 'http://localhost:8000/users/';
 
   // User register method => Hashing on backend
   async register(username: any, password: any, email: any) {
