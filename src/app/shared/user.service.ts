@@ -13,6 +13,9 @@ export class UserService {
   // Put Users API Endpoint URL in constant
   userURL: string = 'http://localhost:8000/users/';
 
+  // Post User URL
+  postUserURL: string = 'http://localhost:8000/api/users/';
+
   // User register method => Hashing on backend
   async register(username: any, password: any, email: any) {
     // call array of users from API
@@ -24,7 +27,7 @@ export class UserService {
         password: password,
         email: email
       };
-      const result = await fetch(this.userURL, {
+      const result = await fetch(this.postUserURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
