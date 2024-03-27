@@ -1,9 +1,9 @@
 <div class="container d-flex justify-content-center align-items-center">
     <div *ngIf="isLoggedIn">
-        <h1>Welkom terug, {{username}}</h1>
+        <h1>Welcome back, {{username}}.</h1>
     </div>
     <div *ngIf="!isLoggedIn">
-        <h1>Welkom bij Festimate!</h1>
+        <h1>Welcome to Festimate.</h1>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-secondary mt-2" type="submit" (click)="goToLogin()">Login</button>
         </div>
