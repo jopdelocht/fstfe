@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CardService } from '../shared/card.service';
 
 @Component({
   selector: 'app-gamelobby',
@@ -8,6 +9,20 @@ import { Component } from '@angular/core';
   styleUrl: './gamelobby.component.css'
 })
 export class GamelobbyComponent {
+
+  constructor(public cardService: CardService) { }
+
+
+
+  regularcardsURL = this.cardService.regularCardsURL;
+  regularCards: any[] = [];
+
+  async fetchRegularCards() {
+    this.regularCards = await this.cardService.getRegularCards();
+    console.log(this.regularCards)
+  }
+
+  // Logic to display username in the header
   username: string | null | undefined;
   isLoggedIn: boolean = false;
   ngOnInit() {
@@ -17,5 +32,6 @@ export class GamelobbyComponent {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
     }
+    this.fetchRegularCards();
   }
 }
