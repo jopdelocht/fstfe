@@ -78,9 +78,9 @@ h3 {
     font-weight: 700;
 }
 
-.box {
+.card {
     position: absolute;
-    width: 20rem;
+    width: 25rem;
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);

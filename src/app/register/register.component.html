@@ -19,20 +19,22 @@
     </div>
   </div> -->
 
-<div class="box">
-  <h3>Registreren</h3>
-  <input type="text" placeholder="Gebruikersnaam" class="form-control mb-2" [(ngModel)]="username">
-  <input type="email" placeholder="E-mail" class="form-control mb-2" [(ngModel)]="email" required email>
-  <div class="input-group">
-    <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Wachtwoord" class="form-control mb-2"
-      [(ngModel)]="password">
-    <button class="btn btn-primary mb-2" (click)="togglePasswordVisibility()"><i
-        class="fa-solid fa-eye-slash"></i></button>
-  </div>
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Registreren</button>
-  </div>
-  <div class="d-flex justify-content-center mt-5">
-    <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Terug naar login</a>
+<div class="card">
+  <div class="card-body">
+    <h3>Sign up</h3>
+    <input type="text" placeholder="Username" class="form-control mb-2" [(ngModel)]="username">
+    <input type="email" placeholder="E-mail" class="form-control mb-2" [(ngModel)]="email" required email>
+    <div class="input-group">
+      <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Password" class="form-control mb-2"
+        [(ngModel)]="password">
+      <button class="btn btn-primary mb-2" (click)="togglePasswordVisibility()"><i
+          class="fa-solid fa-eye-slash"></i></button>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Register</button>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+      <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Back to login.</a>
+    </div>
   </div>
 </div>

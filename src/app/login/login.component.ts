@@ -28,16 +28,16 @@ export class LoginComponent {
 
   async onSubmit() {
     if (!this.username || !this.password) {
-      this.toastr.error('Vul alle velden in', 'Error');
+      this.toastr.error('Please fill in all fields', 'Error');
     } else if (this.username && this.password) {
       const token = await this.userService.login(this.username, this.password);
       if (token) {
         localStorage.setItem('token', token)
         localStorage.setItem('username', this.username);
-        this.toastr.success('Ingelogd', 'Succes');
+        this.toastr.success('Logged in', 'Great succes!');
         setTimeout((this.redirectToHome), 2000);
       } else {
-        this.toastr.error('Foutieve inloggegevens', 'Error');
+        this.toastr.error('Incorrect login details', 'Error');
       }
       this.username = '';
       this.password = '';
