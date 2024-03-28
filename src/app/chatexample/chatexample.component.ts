@@ -22,7 +22,7 @@ export class ChatexampleComponent {
   message = '';
 
   chosenChannel: string = '';
-
+  room: string = '';
 
   // logChannel(channel: string) {
   //   console.log(channel)
@@ -30,7 +30,7 @@ export class ChatexampleComponent {
 
 
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     // getting chosen channel data from gamelobby component
     const state = history.state as { chosenChannel: string };
@@ -38,6 +38,7 @@ export class ChatexampleComponent {
       this.chosenChannel = state.chosenChannel;
     }
     console.log(this.chosenChannel);
+    this.room = this.chosenChannel;
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
@@ -45,17 +46,24 @@ export class ChatexampleComponent {
     const pusher = new Pusher('640e9781247d1e8565c9', {
       cluster: 'eu'
     });
+    if (this.room === 'een') {
+      let channel = pusher.subscribe('chatChannelOne');
+      channel.bind('message', (data: any) => {
+        this.messages.push(data);
+        console.log(this.messages);
+      });
+    } else if (this.room === 'twee') {
+      let channel = pusher.subscribe('chatChannelTwo');
+      channel.bind('message', (data: any) => {
+        this.messages.push(data);
+        console.log(this.messages);
+      });
+    }
 
-    let channel = pusher.subscribe('chat' + this.chosenChannel);
-    channel.bind('message', (data: any) => {
-      this.messages.push(data);
-      console.log(this.messages);
-
-    });
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username');
     }
-
+    return this.room
   }
 
 
@@ -64,8 +72,8 @@ export class ChatexampleComponent {
     this.http.post('http://localhost:8000/api/messages/', {
       username: this.username,
       message: this.message,
-
+      room: this.room
     }).subscribe(() => this.message = '');
-
+    console.log(this.room)
   }
 }
