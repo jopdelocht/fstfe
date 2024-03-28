@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { CardService } from '../shared/card.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gamelobby',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './gamelobby.component.html',
   styleUrl: './gamelobby.component.css'
 })
 export class GamelobbyComponent {
 
-  constructor(public cardService: CardService) { }
+  constructor(public cardService: CardService, private router: Router) { }
 
 
 
@@ -34,4 +36,22 @@ export class GamelobbyComponent {
     }
     this.fetchRegularCards();
   }
+
+
+  myChannel: any = "default"
+  chosenChannel: string = '';
+
+  updateChannel() {
+    if (this.myChannel === "een") {
+      this.chosenChannel = "een";
+      console.log(this.chosenChannel);
+    } else if (this.myChannel === "twee") {
+      this.chosenChannel = "twee";
+      console.log(this.chosenChannel);
+    }
+  }
+
+  navigateToChatexample() {
+    this.router.navigate(['/chatexample'], { state: { chosenChannel: this.chosenChannel } });
+ }
 }

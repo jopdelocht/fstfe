@@ -20,7 +20,7 @@ h1 {
 
 .card {
     width: 20rem;
-    height: 13rem;
+    height: 15rem;
 }
 
 
@@ -104,6 +104,17 @@ h3 {
     justify-content: center;
 
 
+}
+
+/* Styling for the channel select dropdown */
+.form-select {
+    font-family: 'Assistant', sans-serif;
+    margin-bottom: 1rem;
+}
+
+.form-select:focus {
+    border-color: #6BC7F0;
+    box-shadow: 0 0 0 0.2rem rgba(107, 200, 240, 0.329);
 }
 
 

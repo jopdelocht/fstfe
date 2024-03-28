@@ -10,8 +10,14 @@
                         <h3>Create session</h3>
                         <input class="form-control username mb-2" type="text" placeholder="Session name">
                         <input class="form-control password mb-2" type="text" placeholder="Choose cards">
+                        <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
+                            <option value="default" disabled>Channel:</option>
+                            <option value="een">een</option>
+                            <option value="twee">twee</option>
+                        </select>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-secondary" type="submit">Create</button>
+                            <button class="btn btn-secondary" type="submit"
+                                (click)="navigateToChatexample()">Create</button>
                         </div>
                     </div>
                 </div>
