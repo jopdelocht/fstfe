@@ -37,11 +37,11 @@ export class RegisterComponent {
 
     // check if all fields are filled
     if (!this.username || !this.password || !this.email) {
-      this.toastr.error('Vul alle velden in', 'Error');
+      this.toastr.error('Please fill in all fields', 'Error');
     } else {
       // check if email is valid (containing @ and .)
       if (this.email.includes("@") === false || this.email.includes(".") === false) {
-        this.toastr.error('Voer een geldig email-adres in', 'Error');
+        this.toastr.error('Please enter a valid email address', 'Error');
       } else {
         // call method to register from userservice
         this.userService.register(this.username, this.password, this.email);

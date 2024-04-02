@@ -35,13 +35,13 @@ export class UserService {
         body: JSON.stringify(user)
       });
       // confirm user created
-      this.toastr.success('Succesvol geregistreerd', 'Success', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
+      this.toastr.success('Registered successfully', 'Success', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
       // call method to go to login
       this.goToLogin();
       return result.json();
     } else {
       // error if user or email already exists
-      this.toastr.error('Gebruikersnaam en/of email bestaat al', 'Error', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
+      this.toastr.error('Username and/or email already exists', 'Error', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
     }
   }
 

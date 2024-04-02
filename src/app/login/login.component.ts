@@ -34,10 +34,10 @@ export class LoginComponent {
       if (token) {
         localStorage.setItem('token', token)
         localStorage.setItem('username', this.username);
-        this.toastr.success('Logged in', 'Great succes!');
+        this.toastr.success('Logged in', 'Succes');
         setTimeout((this.redirectToHome), 2000);
       } else {
-        this.toastr.error('Incorrect login details', 'Error');
+        this.toastr.error('Incorrect login credentials', 'Error');
       }
       this.username = '';
       this.password = '';

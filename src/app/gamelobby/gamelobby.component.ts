@@ -3,6 +3,7 @@ import { CardService } from '../shared/card.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GamesService } from '../shared/games.service';
 
 @Component({
   selector: 'app-gamelobby',
@@ -13,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class GamelobbyComponent {
 
-  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService) { }
+  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService) { }
 
 
   // Logic to display username in the header
@@ -83,9 +84,9 @@ export class GamelobbyComponent {
       localStorage.setItem('role', 'admin')
       localStorage.setItem('channel', gameChannel);
 
+      this.gamesService.createGame(this.gameName, this.selectedSet, gameChannel);
 
-
-      this.toastr.success('Game created successfully', "Let's go!");
+      this.toastr.success('Game created successfully.', "Success!");
       this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
     }
   }
@@ -95,7 +96,7 @@ export class GamelobbyComponent {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     } else if (this.gameChannel.length !== 6) {
-      this.toastr.error('The number of characters must be 6.', 'Error');
+      this.toastr.error('The number of characters must be 6', 'Error');
       return;
 
     }
@@ -103,7 +104,7 @@ export class GamelobbyComponent {
     else if (this.gameChannel) {
       localStorage.setItem('role', 'player')
       localStorage.setItem('channel', this.gameChannel);
-      this.toastr.success('Game joined successfully', "Let's go!");
+      this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametableplayer'], { queryParams: { selectedSet: this.selectedSet } });
     }
   }
