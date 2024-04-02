@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CardService } from '../shared/card.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-gamelobby',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class GamelobbyComponent {
 
-  constructor(public cardService: CardService, private router: Router) { }
+  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService) { }
 
 
   // Logic to display username in the header
@@ -27,25 +28,26 @@ export class GamelobbyComponent {
     }
   }
 
-  // storing sessionname in variable
-  sessionname: string = "";
+  // storing sessionname and gamechannel in variable
+  gamename: string = "";
+  gameChannel: string = "";
 
 
   // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
-  myChannel: any = "default"
-  chosenChannel: string = '';
+  // myChannel: any = "default"
+  // chosenChannel: string = '';
 
-  updateChannel() {
-    if (this.myChannel === "een") {
-      this.chosenChannel = "een";
-      console.log('In UpdateChannel is de channel:');
-      console.log(this.chosenChannel);
-    } else if (this.myChannel === "twee") {
-      this.chosenChannel = "twee";
-      console.log('In UpdateChannel is de channel:');
-      console.log(this.chosenChannel);
-    }
-  }
+  // updateChannel() {
+  //   if (this.myChannel === "een") {
+  //     this.chosenChannel = "een";
+  //     console.log('In UpdateChannel is de channel:');
+  //     console.log(this.chosenChannel);
+  //   } else if (this.myChannel === "twee") {
+  //     this.chosenChannel = "twee";
+  //     console.log('In UpdateChannel is de channel:');
+  //     console.log(this.chosenChannel);
+  //   }
+  // }
 
 
   // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
@@ -63,16 +65,50 @@ export class GamelobbyComponent {
 
   // after the user has chosen a channel, by clicking the button CREATE --> navigate to chatexample component
   // also passes the current value of chosenChannel
-  navigateToChatexample() {
-    this.router.navigate(['/chatexample'],
-      { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.sessionname } });
-    console.log('In navigateToChatexample is de channel:');
-    console.log(this.chosenChannel);
+  // navigateToChatexample() {
+  //   this.router.navigate(['/chatexample'],
+  //     { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
+  //   console.log('In navigateToChatexample is de channel:');
+  //   console.log(this.chosenChannel);
+  // }
+
+  createGame() {
+    if (!this.gamename || this.myCardSet === "default") {
+      this.toastr.error('Please fill in all fields', 'Error');
+      return;
+    } else if (this.gamename && this.myCardSet) {
+      // Generate a random string of 6 numbers for game channel
+      const gameChannel = Math.random().toString().slice(2, 8);
+
+      localStorage.setItem('role', 'admin')
+      localStorage.setItem('channel', gameChannel);
+      this.toastr.success('Game created successfully', "Let's go!");
+      this.router.navigate(['/gametableadmin']);
+    }
   }
 
-  navigateToGametable() {
-    this.router.navigate(['/gametable'], { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.sessionname } });
+  joinGame() {
+    if (!this.gameChannel) {
+      this.toastr.error('Please fill in all fields', 'Error');
+      return;
+    } else if (this.gameChannel.length !== 6) {
+      this.toastr.error('The number of characters must be 6.', 'Error');
+      return;
+
+    }
+
+    else if (this.gameChannel) {
+      localStorage.setItem('role', 'player')
+      localStorage.setItem('channel', this.gameChannel);
+      this.toastr.success('Game joined successfully', "Let's go!");
+      this.router.navigate(['/gametableplayer']);
+    }
   }
+
+
+  // navigateToGametable() {
+  //   this.router.navigate(['/gametable'], { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
+  // }
 
 
 

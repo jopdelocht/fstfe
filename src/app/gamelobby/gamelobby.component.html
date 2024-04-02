@@ -7,39 +7,43 @@
             <div class="maincontainer gap-2 d-flex">
                 <div class="card">
                     <div class="card-body">
-                        <h3>Create session</h3>
-                        <input class="form-control username mb-2" type="text" placeholder="Session name"
-                            [(ngModel)]="sessionname">
+                        <h3>Create game</h3>
+                        <input class="form-control username mb-2" type="text" placeholder="Game name"
+                            [(ngModel)]="gamename">
                         <select class="form-select mb-2" [(ngModel)]="myCardSet"
                             (change)="updateSelectedCards(myCardSet)">
                             <option value="default" disabled>Set of cards:</option>
-                            <option value="regular">Regular</option>
-                            <option value="fibonacci">Fibonacci</option>
+                            <option value="1">Regular</option>
+                            <option value="2">Fibonacci</option>
                         </select>
-                        <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
+                        <!-- <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
                             <option value="default" disabled>Channel:</option>
                             <option value="een">One</option>
                             <option value="twee">Two</option>
-                        </select>
-                        <div class="d-flex justify-content-end">
+                        </select> -->
+                        <!-- <div class="d-flex justify-content-end">
                             <button class="btn btn-secondary left" type="submit"
                                 (click)="navigateToChatexample()">Chat</button>
                             <button class="btn btn-secondary" type="submit"
                                 (click)="navigateToGametable()">Game</button>
+                        </div> -->
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-secondary" type="submit" (click)="createGame()">Create</button>
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h3>Join session</h3>
-                        <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
+                        <h3>Join game</h3>
+                        <input class="form-control username mb-2" type="text" placeholder="Channel - 6 numbers"
+                            [(ngModel)]="gameChannel">
+                        <!-- <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
                             <option value="default" disabled>Channel:</option>
                             <option value="een">One</option>
                             <option value="twee">Two</option>
-                        </select>
+                        </select> -->
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-secondary" type="submit"
-                                (click)="navigateToChatexample()">Join</button>
+                            <button class="btn btn-secondary" type="submit" (click)="joinGame()">Join</button>
                         </div>
                     </div>
                 </div>

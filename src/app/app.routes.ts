@@ -5,6 +5,8 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { GamelobbyComponent } from './gamelobby/gamelobby.component';
 import { ChatexampleComponent } from './chatexample/chatexample.component';
+import { GametableadminComponent } from './gametableadmin/gametableadmin.component';
+import { GametableplayerComponent } from './gametableplayer/gametableplayer.component';
 
 // Auth guard and login component
 import { authGuard } from './auth.guard';
@@ -30,14 +32,27 @@ export const routes: Routes = [
     },
     {
         path: 'gametable',
-        component: GametableComponent
+        component: GametableComponent,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'gametableadmin',
+        component: GametableadminComponent,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'gametableplayer',
+        component: GametableplayerComponent,
+        canActivate: [authGuard],
     },
     {
         path: 'gamelobby',
-        component: GamelobbyComponent
+        component: GamelobbyComponent,
+        canActivate: [authGuard],
     },
     {
         path: 'chatexample',
-        component: ChatexampleComponent
+        component: ChatexampleComponent,
+        canActivate: [authGuard],
     }
 ];
