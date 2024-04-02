@@ -173,13 +173,6 @@ export class GametableComponent {
     }
   }
 
-  updateSelectedCards(chosenSet: any) {
-    if (chosenSet === "regular") {
-      this.selectedSet = this.regularCards;
-    } else if (chosenSet === "fibonacci") {
-      this.selectedSet = this.fibonacciCards;
-    }
-  }
 
 
   startGame() {

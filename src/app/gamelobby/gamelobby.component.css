@@ -109,12 +109,17 @@ h3 {
 /* Styling for the channel select dropdown */
 .form-select {
     font-family: 'Assistant', sans-serif;
-    margin-bottom: 1rem;
 }
 
 .form-select:focus {
     border-color: #6BC7F0;
     box-shadow: 0 0 0 0.2rem rgba(107, 200, 240, 0.329);
+}
+
+
+/* Styling for the left button */
+.btn.btn-secondary.left {
+    margin-right: 0.5rem;
 }
 
 

@@ -8,25 +8,38 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>Create session</h3>
-                        <input class="form-control username mb-2" type="text" placeholder="Session name">
-                        <input class="form-control password mb-2" type="text" placeholder="Choose cards">
+                        <input class="form-control username mb-2" type="text" placeholder="Session name"
+                            [(ngModel)]="sessionname">
+                        <select class="form-select mb-2" [(ngModel)]="myCardSet"
+                            (change)="updateSelectedCards(myCardSet)">
+                            <option value="default" disabled>Set of cards:</option>
+                            <option value="regular">Regular</option>
+                            <option value="fibonacci">Fibonacci</option>
+                        </select>
                         <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
                             <option value="default" disabled>Channel:</option>
-                            <option value="een">een</option>
-                            <option value="twee">twee</option>
+                            <option value="een">One</option>
+                            <option value="twee">Two</option>
                         </select>
                         <div class="d-flex justify-content-end">
+                            <button class="btn btn-secondary left" type="submit"
+                                (click)="navigateToChatexample()">Chat</button>
                             <button class="btn btn-secondary" type="submit"
-                                (click)="navigateToChatexample()">Create</button>
+                                (click)="navigateToGametable()">Game</button>
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <h3>Join session</h3>
-                        <input class="form-control username mb-2" type="text" placeholder="Session url">
+                        <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
+                            <option value="default" disabled>Channel:</option>
+                            <option value="een">One</option>
+                            <option value="twee">Two</option>
+                        </select>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-secondary" type="submit">Join</button>
+                            <button class="btn btn-secondary" type="submit"
+                                (click)="navigateToChatexample()">Join</button>
                         </div>
                     </div>
                 </div>

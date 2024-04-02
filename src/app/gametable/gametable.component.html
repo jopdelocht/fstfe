@@ -53,12 +53,7 @@
                 <button type="button" class="btn btn-primary btn-lg" (click)="startGame()">Start
                     game</button>
             </div>
-            <h3>Choose your set</h3>
-            <select class="form-select" [(ngModel)]="chosenSet" (change)="updateSelectedCards(chosenSet)">
-                <option value="default" disabled>Set of cards:</option>
-                <option value="regular">Regular</option>
-                <option value="fibonacci">Fibonacci</option>
-            </select>
+
             <h3>Pick your points</h3>
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 <div *ngFor="let card of selectedSet; let i = index; trackBy: trackById" class="col">

@@ -37,7 +37,6 @@ export class ChatexampleComponent {
     if (state) {
       this.chosenChannel = state.chosenChannel;
     }
-    console.log(this.chosenChannel);
     this.room = this.chosenChannel;
 
     // Enable pusher logging - don't include this in production
@@ -46,19 +45,28 @@ export class ChatexampleComponent {
     const pusher = new Pusher('640e9781247d1e8565c9', {
       cluster: 'eu'
     });
-    if (this.room === 'een') {
-      let channel = pusher.subscribe('chatChannelOne');
-      channel.bind('message', (data: any) => {
-        this.messages.push(data);
-        console.log(this.messages);
-      });
-    } else if (this.room === 'twee') {
-      let channel = pusher.subscribe('chatChannelTwo');
-      channel.bind('message', (data: any) => {
-        this.messages.push(data);
-        console.log(this.messages);
-      });
-    }
+
+    let channel = pusher.subscribe('chatChannelOne');
+    channel.bind('message', (data: any) => {
+      this.messages.push(data);
+      console.log(this.messages);
+    });
+
+
+
+    // if (this.room === 'een') {
+    //   let channel = pusher.subscribe('chatChannelOne');
+    //   channel.bind('message', (data: any) => {
+    //     this.messages.push(data);
+    //     console.log(this.messages);
+    //   });
+    // } else if (this.room === 'twee') {
+    //   let channel = pusher.subscribe('chatChannelTwo');
+    //   channel.bind('message', (data: any) => {
+    //     this.messages.push(data);
+    //     console.log(this.messages);
+    //   });
+    // }
 
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username');
