@@ -52,13 +52,13 @@ export class GamelobbyComponent {
 
   // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
   myCardSet: any = "default";
-  selectedSet: string = '';
+  selectedSet: number = 0;
 
   updateSelectedCards(myCardSet: any) {
-    if (myCardSet === "regular") {
-      this.selectedSet = "regular";
-    } else if (myCardSet === "fibonacci") {
-      this.selectedSet = "fibonacci";
+    if (myCardSet === "1") {
+      this.selectedSet = 1;
+    } else if (myCardSet === "2") {
+      this.selectedSet = 2;
     }
   }
 
@@ -83,7 +83,7 @@ export class GamelobbyComponent {
       localStorage.setItem('role', 'admin')
       localStorage.setItem('channel', gameChannel);
       this.toastr.success('Game created successfully', "Let's go!");
-      this.router.navigate(['/gametableadmin']);
+      this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gamename } });
     }
   }
 
@@ -101,7 +101,7 @@ export class GamelobbyComponent {
       localStorage.setItem('role', 'player')
       localStorage.setItem('channel', this.gameChannel);
       this.toastr.success('Game joined successfully', "Let's go!");
-      this.router.navigate(['/gametableplayer']);
+      this.router.navigate(['/gametableplayer'], { queryParams: { selectedSet: this.selectedSet } });
     }
   }
 
