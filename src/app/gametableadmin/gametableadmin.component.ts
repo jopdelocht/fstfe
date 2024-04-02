@@ -17,18 +17,18 @@ export class GametableadminComponent {
   gameChannel: string | null | undefined;
   role: string | null | undefined;
   selectedSet: number = 0;
-  gamename: string = "";
+  gameName: string = "";
 
   ngOnInit() {
     this.gameChannel = localStorage.getItem('channel');
     this.role = localStorage.getItem('role');
     this.route.queryParams.subscribe(params => {
       this.selectedSet = Number(params['selectedSet']) || 0;
-      this.gamename = params['gamename'] || '';
+      this.gameName = params['gamename'] || '';
     });
     console.log('Het kanaal is:', this.gameChannel);
     console.log('Uw role is:', this.role);
-    console.log('De gekozen gamenaam is:', this.gamename);
+    console.log('De gekozen gamenaam is:', this.gameName);
     console.log('De geselecteerde kaartenset is:', this.selectedSet, typeof this.selectedSet);
   }
 

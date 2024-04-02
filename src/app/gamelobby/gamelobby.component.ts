@@ -29,7 +29,7 @@ export class GamelobbyComponent {
   }
 
   // storing sessionname and gamechannel in variable
-  gamename: string = "";
+  gameName: string = "";
   gameChannel: string = "";
 
 
@@ -73,17 +73,20 @@ export class GamelobbyComponent {
   // }
 
   createGame() {
-    if (!this.gamename || this.myCardSet === "default") {
+    if (!this.gameName || this.myCardSet === "default") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
-    } else if (this.gamename && this.myCardSet) {
+    } else if (this.gameName && this.myCardSet) {
       // Generate a random string of 6 numbers for game channel
       const gameChannel = Math.random().toString().slice(2, 8);
 
       localStorage.setItem('role', 'admin')
       localStorage.setItem('channel', gameChannel);
+
+
+
       this.toastr.success('Game created successfully', "Let's go!");
-      this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gamename } });
+      this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
     }
   }
 
