@@ -86,7 +86,7 @@ export class GamelobbyComponent {
 
       this.gamesService.createGame(this.gameName, this.selectedSet, gameChannel);
 
-      this.toastr.success('Game created successfully.', "Success!");
+      this.toastr.success('Game created successfully', "Success");
       this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
     }
   }
