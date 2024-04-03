@@ -19,8 +19,6 @@ export class GamelobbyComponent {
   gamesURL = this.gamesService.gamesURL;
   gamesArray: any[] = [];
 
-
-
   // Logic to display username in the header
   username: string | null | undefined;
   isLoggedIn: boolean = false;
@@ -39,28 +37,9 @@ export class GamelobbyComponent {
     this.gamesArray = await this.gamesService.getGames();
   }
 
-
   // storing sessionname and gameCode in variable
   gameName: string = "";
   gameCode: string = "";
-
-
-  // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
-  // myChannel: any = "default"
-  // chosenChannel: string = '';
-
-  // updateChannel() {
-  //   if (this.myChannel === "een") {
-  //     this.chosenChannel = "een";
-  //     console.log('In UpdateChannel is de channel:');
-  //     console.log(this.chosenChannel);
-  //   } else if (this.myChannel === "twee") {
-  //     this.chosenChannel = "twee";
-  //     console.log('In UpdateChannel is de channel:');
-  //     console.log(this.chosenChannel);
-  //   }
-  // }
-
 
   // when the user selects a cardset from the dropdown menu (myCardSet), store the value in selectedSet
   myCardSet: any = "default";
@@ -73,16 +52,6 @@ export class GamelobbyComponent {
       this.selectedSet = 2;
     }
   }
-
-
-  // after the user has chosen a channel, by clicking the button CREATE --> navigate to chatexample component
-  // also passes the current value of chosenChannel
-  // navigateToChatexample() {
-  //   this.router.navigate(['/chatexample'],
-  //     { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
-  //   console.log('In navigateToChatexample is de channel:');
-  //   console.log(this.chosenChannel);
-  // }
 
   createGame() {
     if (!this.gameName || this.myCardSet === "default") {
@@ -133,13 +102,6 @@ export class GamelobbyComponent {
     }
   }
 
-
-  // navigateToGametable() {
-  //   this.router.navigate(['/gametable'], { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
-  // }
-
-
-
   //  STORED FOR FUTURE USE
   //  regularcardsURL = this.cardService.regularCardsURL;
   //  regularCards: any[] = [];
@@ -148,4 +110,33 @@ export class GamelobbyComponent {
   //    this.regularCards = await this.cardService.getRegularCards();
   //    console.log(this.regularCards)
   //  }
+
+  // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
+  // myChannel: any = "default"
+  // chosenChannel: string = '';
+
+  // updateChannel() {
+  //   if (this.myChannel === "een") {
+  //     this.chosenChannel = "een";
+  //     console.log('In UpdateChannel is de channel:');
+  //     console.log(this.chosenChannel);
+  //   } else if (this.myChannel === "twee") {
+  //     this.chosenChannel = "twee";
+  //     console.log('In UpdateChannel is de channel:');
+  //     console.log(this.chosenChannel);
+  //   }
+  // }
+
+  // navigateToGametable() {
+  //   this.router.navigate(['/gametable'], { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
+  // }
+
+  // after the user has chosen a channel, by clicking the button CREATE --> navigate to chatexample component
+  // also passes the current value of chosenChannel
+  // navigateToChatexample() {
+  //   this.router.navigate(['/chatexample'],
+  //     { state: { chosenChannel: this.chosenChannel, selectedSet: this.selectedSet, sessionname: this.gamename } });
+  //   console.log('In navigateToChatexample is de channel:');
+  //   console.log(this.chosenChannel);
+  // }
 }

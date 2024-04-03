@@ -26,10 +26,14 @@ h3 {
     font-weight: 700;
 }
 
-.card {
+/* .card {
     position: absolute;
     width: 25rem;
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
+} */
+
+.scrollarea {
+    min-height: 25rem;
 }

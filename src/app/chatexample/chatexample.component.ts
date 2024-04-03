@@ -54,19 +54,19 @@ export class ChatexampleComponent {
 
 
 
-    // if (this.room === 'een') {
-    //   let channel = pusher.subscribe('chatChannelOne');
-    //   channel.bind('message', (data: any) => {
-    //     this.messages.push(data);
-    //     console.log(this.messages);
-    //   });
-    // } else if (this.room === 'twee') {
-    //   let channel = pusher.subscribe('chatChannelTwo');
-    //   channel.bind('message', (data: any) => {
-    //     this.messages.push(data);
-    //     console.log(this.messages);
-    //   });
-    // }
+    if (this.room === 'een') {
+      let channel = pusher.subscribe('chatChannelOne');
+      channel.bind('message', (data: any) => {
+        this.messages.push(data);
+        console.log(this.messages);
+      });
+    } else if (this.room === 'twee') {
+      let channel = pusher.subscribe('chatChannelTwo');
+      channel.bind('message', (data: any) => {
+        this.messages.push(data);
+        console.log(this.messages);
+      });
+    }
 
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username');
