@@ -14,19 +14,19 @@ export class GametableadminComponent {
 
   constructor(private toastr: ToastrService, private router: Router, private route: ActivatedRoute) { }
 
-  gameChannel: string | null | undefined;
+  gameCode: string | null | undefined;
   role: string | null | undefined;
   selectedSet: number = 0;
   gameName: string = "";
 
   ngOnInit() {
-    this.gameChannel = localStorage.getItem('channel');
+    this.gameCode = localStorage.getItem('gamecode');
     this.role = localStorage.getItem('role');
     this.route.queryParams.subscribe(params => {
       this.selectedSet = Number(params['selectedSet']) || 0;
       this.gameName = params['gamename'] || '';
     });
-    console.log('Het kanaal is:', this.gameChannel);
+    console.log('Het kanaal is:', this.gameCode);
     console.log('Uw role is:', this.role);
     console.log('De gekozen gamenaam is:', this.gameName);
     console.log('De geselecteerde kaartenset is:', this.selectedSet, typeof this.selectedSet);
@@ -36,7 +36,7 @@ export class GametableadminComponent {
     const confirmed = window.confirm('Leaving this game as an admin could lead to malfunctions. Are you sure?');
     if (confirmed) {
       localStorage.removeItem('role');
-      localStorage.removeItem('channel');
+      localStorage.removeItem('gamecode');
       this.toastr.success('Welcome back to the lobby', 'Succes');
       this.router.navigate(['/gamelobby']);
     } else {

@@ -19,7 +19,7 @@ export class GamesService {
 
 
 
-  async createGame(gameName: string, selectedSet: number, gameChannel: string) {
+  async createGame(gameName: string, selectedSet: number, gameCode: string) {
     const token = localStorage.getItem('token');
     const options = {
       method: 'POST',
@@ -27,7 +27,7 @@ export class GamesService {
       body: JSON.stringify({
         name: gameName,
         setofcard_id: selectedSet,
-        channel: gameChannel
+        gamecode: gameCode
       })
     };
 

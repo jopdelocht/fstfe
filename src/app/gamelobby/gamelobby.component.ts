@@ -16,10 +16,7 @@ export class GamelobbyComponent {
 
   constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService) { }
 
-  gamesURL: string = 'http://localhost:8000/api/games/';
-
-
-  productsURL = this.gamesService.gamesURL;
+  gamesURL = this.gamesService.gamesURL;
   gamesArray: any[] = [];
 
 
@@ -34,24 +31,19 @@ export class GamelobbyComponent {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
     }
-    this.initializeGames();
+    this.fetchGames();
   }
 
-  // bedoeling om te checken of channel bestaat --> joinGame
+  // fetching data from games table, needed for duplicate gameCode check
   async fetchGames() {
     this.gamesArray = await this.gamesService.getGames();
+    console.log(this.gamesArray);
   }
 
-  // bedoeling om te checken of channel bestaat --> joinGame
-  async initializeGames() {
-    await this.fetchGames();
-    const matchingChannel = this.gamesArray.find(game => game.channel === '152456');
-    console.log(matchingChannel);
-  }
 
-  // storing sessionname and gamechannel in variable
+  // storing sessionname and gameCode in variable
   gameName: string = "";
-  gameChannel: string = "";
+  gameCode: string = "";
 
 
   // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
@@ -71,7 +63,7 @@ export class GamelobbyComponent {
   // }
 
 
-  // when the user selects a channel from the dropdown menu (myChannel), store the value in chosenChannel
+  // when the user selects a cardset from the dropdown menu (myCardSet), store the value in selectedSet
   myCardSet: any = "default";
   selectedSet: number = 0;
 
@@ -98,39 +90,41 @@ export class GamelobbyComponent {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     } else if (this.gameName && this.myCardSet) {
-      // Generate a unique random string of 6 numbers for game channel
-      let gameChannel: string;
+      // Generate a unique random string of 6 numbers for gameCode
+      let gameCode: string;
       let isDuplicate: boolean;
 
       do {
-        gameChannel = Math.random().toString().slice(2, 8);
-        isDuplicate = this.gamesArray.some(game => game.channel === gameChannel);
+        gameCode = Math.random().toString().slice(2, 8);
+        isDuplicate = this.gamesArray.some(game => game.gamecode === gameCode);
       } while (isDuplicate);
 
       localStorage.setItem('role', 'admin')
-      localStorage.setItem('channel', gameChannel);
+      localStorage.setItem('gamecode', gameCode);
 
-      this.gamesService.createGame(this.gameName, this.selectedSet, gameChannel);
-
+      //POST request - insert into games table
+      this.gamesService.createGame(this.gameName, this.selectedSet, gameCode);
       this.toastr.success('Game created successfully', "Success");
+
+      // navigating to gametableadmin and also passing the selectedSet and gameName in the url
       this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
     }
   }
 
   joinGame() {
     // throws errors if not filled in correctly
-    if (!this.gameChannel) {
+    if (!this.gameCode) {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
-    } else if (this.gameChannel.length !== 6) {
+    } else if (this.gameCode.length !== 6) {
       this.toastr.error('The number of characters must be 6', 'Error');
       return;
     }
 
-    // sets role and channel in localstorage, navigates to gametable player with 
-    else if (this.gameChannel) {
+    // sets role and gamecode in localstorage, navigates to gametable player with 
+    else if (this.gameCode) {
       localStorage.setItem('role', 'player')
-      localStorage.setItem('channel', this.gameChannel);
+      localStorage.setItem('gamecode', this.gameCode);
       this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametableplayer']);
     }
