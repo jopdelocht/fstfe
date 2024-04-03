@@ -37,7 +37,6 @@ export class GamelobbyComponent {
   // fetching data from games table, needed for duplicate gameCode check
   async fetchGames() {
     this.gamesArray = await this.gamesService.getGames();
-    console.log(this.gamesArray);
   }
 
 
@@ -112,17 +111,21 @@ export class GamelobbyComponent {
   }
 
   joinGame() {
-    // throws errors if not filled in correctly
+    // throw error if not filled in completely
     if (!this.gameCode) {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
+      // throw error if not filled in correctly, string must be 6 characters long
     } else if (this.gameCode.length !== 6) {
       this.toastr.error('The number of characters must be 6', 'Error');
       return;
+      // throw error after checking if gamecode is valid
+    } else if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCode)) {
+      this.toastr.error('Provided gamecode is not valid', 'Error');
+      return;
     }
-
-    // sets role and gamecode in localstorage, navigates to gametable player with 
-    else if (this.gameCode) {
+    // sets role and gamecode in localstorage, navigates to gametable player with, after checking if gamecode is valid
+    else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCode)) {
       localStorage.setItem('role', 'player')
       localStorage.setItem('gamecode', this.gameCode);
       this.toastr.success('Game joined successfully', "Success");
