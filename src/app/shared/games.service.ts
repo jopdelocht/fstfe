@@ -9,6 +9,15 @@ export class GamesService {
 
   gamesURL: string = 'http://localhost:8000/api/games/';
 
+  // get games
+  async getGames() {
+    const response = await fetch(this.gamesURL);
+    const games = await response.json();
+    console.log(games)
+    return games;
+  }
+
+
 
   async createGame(gameName: string, selectedSet: number, gameChannel: string) {
     const token = localStorage.getItem('token');

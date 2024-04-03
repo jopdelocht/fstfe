@@ -16,6 +16,13 @@ export class GamelobbyComponent {
 
   constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService) { }
 
+  gamesURL: string = 'http://localhost:8000/api/games/';
+
+
+  productsURL = this.gamesService.gamesURL;
+  gamesArray: any[] = [];
+
+
 
   // Logic to display username in the header
   username: string | null | undefined;
@@ -27,6 +34,19 @@ export class GamelobbyComponent {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
     }
+    this.initializeGames();
+  }
+
+  // bedoeling om te checken of channel bestaat --> joinGame
+  async fetchGames() {
+    this.gamesArray = await this.gamesService.getGames();
+  }
+
+  // bedoeling om te checken of channel bestaat --> joinGame
+  async initializeGames() {
+    await this.fetchGames();
+    const matchingChannel = this.gamesArray.find(game => game.channel === '152456');
+    console.log(matchingChannel);
   }
 
   // storing sessionname and gamechannel in variable
@@ -78,8 +98,14 @@ export class GamelobbyComponent {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     } else if (this.gameName && this.myCardSet) {
-      // Generate a random string of 6 numbers for game channel
-      const gameChannel = Math.random().toString().slice(2, 8);
+      // Generate a unique random string of 6 numbers for game channel
+      let gameChannel: string;
+      let isDuplicate: boolean;
+
+      do {
+        gameChannel = Math.random().toString().slice(2, 8);
+        isDuplicate = this.gamesArray.some(game => game.channel === gameChannel);
+      } while (isDuplicate);
 
       localStorage.setItem('role', 'admin')
       localStorage.setItem('channel', gameChannel);
@@ -92,20 +118,21 @@ export class GamelobbyComponent {
   }
 
   joinGame() {
+    // throws errors if not filled in correctly
     if (!this.gameChannel) {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     } else if (this.gameChannel.length !== 6) {
       this.toastr.error('The number of characters must be 6', 'Error');
       return;
-
     }
 
+    // sets role and channel in localstorage, navigates to gametable player with 
     else if (this.gameChannel) {
       localStorage.setItem('role', 'player')
       localStorage.setItem('channel', this.gameChannel);
       this.toastr.success('Game joined successfully', "Success");
-      this.router.navigate(['/gametableplayer'], { queryParams: { selectedSet: this.selectedSet } });
+      this.router.navigate(['/gametableplayer']);
     }
   }
 
