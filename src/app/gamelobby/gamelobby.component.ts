@@ -41,6 +41,9 @@ export class GamelobbyComponent {
   gameName: string = "";
   gameCode: string = "";
 
+  // gamecode CAPS conversion variable
+  gameCodeCAPS: string = "";
+
   // when the user selects a cardset from the dropdown menu (myCardSet), store the value in selectedSet
   myCardSet: any = "default";
   selectedSet: number = 0;
@@ -53,54 +56,79 @@ export class GamelobbyComponent {
     }
   }
 
-  createGame() {
+  async createGame() {
     if (!this.gameName || this.myCardSet === "default") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     } else if (this.gameName && this.myCardSet) {
-      // Generate a unique random string of 6 numbers for gameCode
+      // First refresh the array before checking for a duplicate
+      await this.fetchGames();
+
+      // Function to generate a random alphanumeric string
+      // Left out to avoid confusion: O, 0, 1, I, Q
+      const generateRandomString = (length: number): string => {
+        const chars = '23456789ABCDEFGHJKLMNPRSTUVWXYZ';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+      };
+
       let gameCode: string;
       let isDuplicate: boolean;
 
+      // Generate random string and converts it to uppercase
+      // Repeatedly generating new codes until it finds one that does not already exist in the gamesArray. 
+      // Once a unique gameCode is found, the loop exits.
       do {
-        gameCode = Math.random().toString().slice(2, 8);
+        gameCode = generateRandomString(6).toUpperCase();
         isDuplicate = this.gamesArray.some(game => game.gamecode === gameCode);
       } while (isDuplicate);
 
-      localStorage.setItem('role', 'admin')
+      localStorage.setItem('role', 'admin');
       localStorage.setItem('gamecode', gameCode);
 
-      //POST request - insert into games table
+      // POST request - insert into games table
       this.gamesService.createGame(this.gameName, this.selectedSet, gameCode);
       this.toastr.success('Game created successfully', "Success");
 
-      // navigating to gametableadmin and also passing the selectedSet and gameName in the url
+      // Navigating to gametableadmin and also passing the selectedSet and gameName in the URL
       this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
     }
   }
 
-  joinGame() {
+
+  async joinGame() {
+    // First convert the gamecode to uppercase
+    this.gameCodeCAPS = this.gameCode.toUpperCase();
+
     // throw error if not filled in completely
-    if (!this.gameCode) {
+    if (!this.gameCodeCAPS) {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
       // throw error if not filled in correctly, string must be 6 characters long
-    } else if (this.gameCode.length !== 6) {
+    } else if (this.gameCodeCAPS.length !== 6) {
       this.toastr.error('The number of characters must be 6', 'Error');
       return;
-      // throw error after checking if gamecode is valid
-    } else if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCode)) {
+
+    }
+    // first refresh the array before checking for a duplicate
+    await this.fetchGames();
+    // throw error after checking if gamecode is valid
+    if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeCAPS)) {
       this.toastr.error('Provided gamecode is not valid', 'Error');
       return;
     }
     // sets role and gamecode in localstorage, navigates to gametable player with, after checking if gamecode is valid
-    else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCode)) {
+    else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeCAPS)) {
       localStorage.setItem('role', 'player')
-      localStorage.setItem('gamecode', this.gameCode);
+      localStorage.setItem('gamecode', this.gameCodeCAPS);
       this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametableplayer']);
     }
   }
+
 
   //  STORED FOR FUTURE USE
   //  regularcardsURL = this.cardService.regularCardsURL;

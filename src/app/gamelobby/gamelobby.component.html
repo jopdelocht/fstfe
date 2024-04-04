@@ -16,17 +16,6 @@
                             <option value="1">Regular</option>
                             <option value="2">Fibonacci</option>
                         </select>
-                        <!-- <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
-                            <option value="default" disabled>Channel:</option>
-                            <option value="een">One</option>
-                            <option value="twee">Two</option>
-                        </select> -->
-                        <!-- <div class="d-flex justify-content-end">
-                            <button class="btn btn-secondary left" type="submit"
-                                (click)="navigateToChatexample()">Chat</button>
-                            <button class="btn btn-secondary" type="submit"
-                                (click)="navigateToGametable()">Game</button>
-                        </div> -->
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-secondary" type="submit" (click)="createGame()">Create</button>
                         </div>
@@ -35,13 +24,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>Join game</h3>
-                        <input class="form-control username mb-2" type="text" placeholder="Gamecode - 6 numbers"
+                        <input class="form-control username mb-2" type="text" placeholder="Gamecode"
                             [(ngModel)]="gameCode">
-                        <!-- <select class="form-select mb-2" [(ngModel)]="myChannel" (change)="updateChannel()">
-                            <option value="default" disabled>Channel:</option>
-                            <option value="een">One</option>
-                            <option value="twee">Two</option>
-                        </select> -->
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-secondary" type="submit" (click)="joinGame()">Join</button>
                         </div>
