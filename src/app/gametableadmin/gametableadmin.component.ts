@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import Pusher from 'pusher-js';
 
+
 @Component({
   selector: 'app-gametableadmin',
   standalone: true,
@@ -26,6 +27,7 @@ export class GametableadminComponent {
   username: string | null | undefined;
   scores: any[] = [];
   score: string = '';
+
 
   ngOnInit() {
     this.gameCode = localStorage.getItem('gamecode');
@@ -53,7 +55,6 @@ export class GametableadminComponent {
     let channel = pusher.subscribe(this.gameCode!);
     channel.bind('score', (data: any) => {
       this.scores.push(data);
-      console.log(this.scores);
     });
 
   }

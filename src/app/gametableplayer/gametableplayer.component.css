@@ -1,3 +1,11 @@
+/* 
+Pure white: #FFFFFF
+Deep Cynober: #E54758
+Deep Cynober (hover): #d03847
+Sky Blue: #6BC7F0
+Navy Blue: #191825
+*/
+
 .btn-secondary {
     --bs-btn-color: white;
     --bs-btn-bg: #E54758;
@@ -26,14 +34,56 @@ h3 {
     font-weight: 700;
 }
 
-/* .card {
-    position: absolute;
-    width: 25rem;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
+.card {
+    font-family: 'Assistant', sans-serif;
+    margin-bottom: 0.5rem;
+}
 
 .scrollarea {
-    min-height: 25rem;
+    height: 25rem;
+    overflow-y: scroll;
+    z-index: 0;
+}
+
+.fs-5 {
+    font-family: 'Assistant', sans-serif;
+}
+
+.form-control {
+    font-family: 'Assistant', sans-serif;
+}
+
+.form-control:focus {
+    border-color: #6BC7F0;
+    box-shadow: 0 0 0 0.2rem rgba(107, 200, 240, 0.329);
+    /* rgba(107, 199, 240, 1) */
+}
+
+.gamechatcontainer {
+    z-index: 1;
+}
+
+.list-group {
+    --bs-list-group-color: #aeaeae;
+    --bs-list-group-bg: #F8F9FA;
+    --bs-list-group-border-color: var(--bs-border-color);
+    --bs-list-group-border-width: var(--bs-border-width);
+    --bs-list-group-border-radius: var(--bs-border-radius);
+    --bs-list-group-item-padding-x: 1rem;
+    --bs-list-group-item-padding-y: 0.5rem;
+    --bs-list-group-action-color: #F8F9FA;
+    --bs-list-group-action-hover-color: #aeaeae;
+    --bs-list-group-action-hover-bg: #F8F9FA;
+    --bs-list-group-action-active-color: #F8F9FA;
+    --bs-list-group-action-active-bg: #F8F9FA;
+    --bs-list-group-disabled-color: #F8F9FA;
+    --bs-list-group-disabled-bg: #F8F9FA;
+    --bs-list-group-active-color: #F8F9FA;
+    --bs-list-group-active-bg: #F8F9FA;
+    --bs-list-group-active-border-color: #F8F9FA;
+}
+
+.first-item {
+    background: #d9dada;
+    color: #191825
 }

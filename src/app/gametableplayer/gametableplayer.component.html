@@ -1,40 +1,44 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-
             <div class="card">
                 <div class="card-body">
-                    <p>Your gameCode: <strong>{{gameCode}}</strong></p>
+                    <p>User: <strong>{{username}}</strong></p>
                     <p>Your role: <strong>{{role}}</strong></p>
-
+                    <p>Your gamecode: <strong>{{gameCode}}</strong></p>
                     <div class="d-flex">
                         <button class="btn btn-secondary" type="submit" (click)="toLobby()">To lobby</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div class="container">
-                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
-                    <div
-                        class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                        <div class="fs-5">User: <strong>{{username}}</strong>
-                        </div>
-                    </div>
-
-                    <div class="list-group list-group-flush border-bottom scrollarea">
-                        <div class="list-group-item list-group-item-action py-3 lh-sm" *ngFor="let scr of scores">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <strong class="mb-1">{{scr.username}}</strong>
+            <div class="card">
+                <div class="container bg-body-tertiary">
+                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+                        <div
+                            class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                            <div class="fs-5">Tasks
                             </div>
-                            <div class="col-10 mb-1 small">{{scr.score}}</div>
+                        </div>
+                        <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
+                            <!-- display results in reverse -->
+                            <div class="list-group-item list-group-item-action py-3 lh-sm"
+                                *ngFor="let scr of scores.reverse(); let i = index; first as isFirst"
+                                [class.first-item]="isFirst">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <strong class="mb-1">{{scr.username}}</strong>
+                                </div>
+                                <div class="col-10 mb-1 small">{{scr.score}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <form (submit)="sendScore()">
-                    <input class="form-control" [(ngModel)]="score" [ngModelOptions]="{standalone: true}">
-                </form>
             </div>
+            <!-- <div class="gamechatcontainer">
+                <form (submit)="sendScore()">
+                    <input class="form-control " [(ngModel)]="score" [ngModelOptions]="{standalone: true}">
+                </form>
+            </div> -->
+        </div>
+        <div class="col-md-9">
         </div>
     </div>
-</div>
