@@ -164,7 +164,6 @@ export class GametableComponent {
     card.state = true;
     this.myCard = card.value;
     console.log("My card:", this.myCard);
-
   }
   // oninit changes all states to false
   ngOnInit(): void {

@@ -88,13 +88,13 @@ export class GamelobbyComponent {
 
       localStorage.setItem('role', 'admin');
       localStorage.setItem('gamecode', gameCode);
+      await Promise.all([
+        this.gamesService.createGame(this.gameName, this.selectedSet, gameCode)]);
 
-      // POST request - insert into games table
-      this.gamesService.createGame(this.gameName, this.selectedSet, gameCode);
       this.toastr.success('Game created successfully', "Success");
 
-      // Navigating to gametableadmin and also passing the selectedSet and gameName in the URL
-      this.router.navigate(['/gametableadmin'], { queryParams: { selectedSet: this.selectedSet, gamename: this.gameName } });
+      // Navigating to gametableadmin
+      this.router.navigate(['/gametableadmin']);
     }
   }
 

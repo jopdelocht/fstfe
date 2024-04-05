@@ -20,10 +20,15 @@ export class GametableplayerComponent {
 
   gameCode: string | null | undefined;
   role: string | null | undefined;
+  selectedSet: number = 0;
+  gameName: string = "";
 
   username: string | null | undefined;
   scores: any[] = [];
   score: string = '';
+
+  tasks: any[] = [];
+  task: string = '';
 
   ngOnInit() {
     this.gameCode = localStorage.getItem('gamecode');
@@ -45,15 +50,12 @@ export class GametableplayerComponent {
       this.scores.push(data);
       console.log(this.scores);
     });
+
+    channel.bind('task', (data: any) => {
+      this.tasks.push(data);
+    });
   }
 
-  sendScore(): void {
-    this.http.post('http://localhost:8000/api/scores', {
-      username: this.username,
-      score: this.score,
-      room: this.gameCode
-    }).subscribe(() => this.score = '');
-  }
 
   toLobby() {
     const confirmed = window.confirm('Are you sure you want to leave this game?');
@@ -65,6 +67,21 @@ export class GametableplayerComponent {
     } else {
       return;
     }
+  }
+
+  sendScore(): void {
+    this.http.post('http://localhost:8000/api/scores', {
+      username: this.username,
+      score: this.score,
+      room: this.gameCode
+    }).subscribe(() => this.score = '');
+  }
+
+  sendTask(): void {
+    this.http.post('http://localhost:8000/api/tasks', {
+      task: this.task,
+      room: this.gameCode
+    }).subscribe(() => this.task = '');
   }
 
   // gamesURL = this.gamesService.gamesURL;
