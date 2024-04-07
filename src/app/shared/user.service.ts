@@ -58,8 +58,11 @@ export class UserService {
     let users = await this.getUsers();
     // check if user exists
     let user = users.find((u: { name: string; password: string }) => u.name === username);
+
     // check if password is correct
     if (user && bcrypt.compareSync(password, user.password)) {
+      // Store the user ID in localStorage
+      localStorage.setItem('userId', user.id);
       return user.remember_token.toString();
     }
     return null;

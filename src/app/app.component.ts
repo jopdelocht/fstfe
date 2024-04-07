@@ -25,6 +25,7 @@ export class AppComponent {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     this.toastr.success('Logged out', 'Success');
     setTimeout((this.redirectToHome), 2000);
   }

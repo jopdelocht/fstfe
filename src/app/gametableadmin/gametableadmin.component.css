@@ -79,6 +79,8 @@ h3 {
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
 
 /* User details card - upper left corner */
@@ -112,6 +114,7 @@ h3 {
 
 .gamechatcontainer {
     z-index: 1;
+    margin-top: 0.5rem;
 }
 
 /* colour of the task area */
@@ -133,6 +136,8 @@ h3 {
     --bs-list-group-active-color: #F8F9FA;
     --bs-list-group-active-bg: #F8F9FA;
     --bs-list-group-active-border-color: #F8F9FA;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
 
 /* Colour of the first item in the tasks array */

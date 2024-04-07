@@ -22,6 +22,8 @@ Navy Blue: #191825
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
 
 .btn-secondary {
@@ -39,7 +41,8 @@ Navy Blue: #191825
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
-
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
 
 .inputClass {

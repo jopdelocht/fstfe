@@ -30,4 +30,6 @@ h1 {
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
