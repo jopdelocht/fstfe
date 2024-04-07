@@ -6,6 +6,64 @@ Sky Blue: #6BC7F0
 Navy Blue: #191825
 */
 
+/* CONTAINERS */
+.container-all {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.container-left {
+    min-width: 17rem;
+    margin: 1rem;
+}
+
+.container-right {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.container-right-top {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-right-bottom {
+    display: flex;
+    flex-direction: row;
+}
+
+.inner-top {
+    width: 41rem;
+    height: 24rem;
+    margin: 0.5rem;
+}
+
+.inner-bottom-left {
+    width: 20rem;
+    height: 16rem;
+    margin: 0.5rem;
+}
+
+.inner-bottom-right {
+    width: 20rem;
+    height: 16rem;
+    margin: 0.5rem;
+}
+
+/* Basic styling */
+body {
+    text-align: center;
+}
+
+h3 {
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* BUTTONS */
 .btn-secondary {
     --bs-btn-color: white;
     --bs-btn-bg: #E54758;
@@ -21,34 +79,29 @@ Navy Blue: #191825
     --bs-btn-disabled-color: none;
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
-
-}
-
-
-body {
-    text-align: center;
-}
-
-h3 {
     font-family: 'Assistant', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
 }
 
-.card {
+/* User details card - upper left corner */
+.card.user-details {
     font-family: 'Assistant', sans-serif;
     margin-bottom: 0.5rem;
 }
 
+/* Scroll area for the task area */
 .scrollarea {
     height: 25rem;
     overflow-y: scroll;
     z-index: 0;
 }
 
-.fs-5 {
+/* Title of the taskarea */
+.titletask.fs-5 {
     font-family: 'Assistant', sans-serif;
 }
 
+/* Input area of the taskarea */
 .form-control {
     font-family: 'Assistant', sans-serif;
 }
@@ -61,8 +114,10 @@ h3 {
 
 .gamechatcontainer {
     z-index: 1;
+    margin-top: 0.5rem;
 }
 
+/* colour of the task area */
 .list-group {
     --bs-list-group-color: #aeaeae;
     --bs-list-group-bg: #F8F9FA;
@@ -81,9 +136,68 @@ h3 {
     --bs-list-group-active-color: #F8F9FA;
     --bs-list-group-active-bg: #F8F9FA;
     --bs-list-group-active-border-color: #F8F9FA;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
 }
 
+/* Colour of the first item in the tasks array */
 .first-item {
     background: #d9dada;
     color: #191825
+}
+
+
+/* TABLE CARDS */
+.table {
+    margin-bottom: 0;
+}
+
+.card.table {
+    --bs-card-spacer-y: 0.6rem;
+    --bs-card-spacer-x: 0.2rem;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    min-height: 9.5rem;
+}
+
+.card-body.table {
+    align-content: center;
+    padding: 0;
+}
+
+.card-title.table {
+    margin-bottom: 0;
+}
+
+
+/* YOUR POINTS CARDS */
+.card.points {
+    --bs-card-spacer-y: 0.6rem;
+    --bs-card-spacer-x: 0.2rem;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    min-height: 3.5rem;
+}
+
+.card-body.points {
+    align-content: center;
+}
+
+.active-card.points {
+    background-color: #6BC7F0;
+    color: white;
+}
+
+.card.points:hover {
+    cursor: pointer;
+    background-color: #E54758;
+    color: white;
+}
+
+.rowscore {
+    --bs-gutter-y: 0.5rem;
+    --bs-gutter-x: 0.5rem;
 }

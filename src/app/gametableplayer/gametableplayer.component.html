@@ -1,64 +1,75 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    User: <strong>{{username}}</strong><br>
-                    Your role: <strong>{{role}}</strong><br>
-                    Your gamecode: <strong>{{gameCode}}</strong>
-                    <div class="d-flex">
-                        <button class="btn btn-secondary mt-2" type="submit" (click)="toLobby()">To lobby</button>
+<div class="container-all">
+    <div class="container-left">
+        <div class="card user-details">
+            <div class="card-body">
+                User: <strong>{{username}}</strong><br>
+                Your role: <strong>{{role}}</strong><br>
+                Your cardset: <strong>{{setOfCardName}}</strong><br>
+                Your gamecode: <strong>{{gameCode}}</strong>
+                <div class="d-flex">
+                    <button class="btn btn-secondary mt-2" type="submit" (click)="toLobby()">To lobby</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container bg-body-tertiary">
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+                    <div
+                        class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                        <div class="titletask fs-5">Tasks
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
+                        <!-- display results in reverse -->
+                        <div class="list-group-item list-group-item-action py-3 lh-sm"
+                            *ngFor="let tsk of tasks.reverse(); let i = index; first as isFirst"
+                            [class.first-item]="isFirst">
+                            <div class="col-10 mb-1 small">{{tsk.task}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="container bg-body-tertiary">
-                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
-                        <div
-                            class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                            <div class="fs-5">Tasks
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
-                            <!-- display results in reverse -->
-                            <div class="list-group-item list-group-item-action py-3 lh-sm"
-                                *ngFor="let tsk of tasks.reverse(); let i = index; first as isFirst"
-                                [class.first-item]="isFirst">
-                                <div class="col-10 mb-1 small">{{tsk.task}}</div>
+        </div>
+        <!-- <div class="gamechatcontainer">
+            <form (submit)="sendTask()">
+                <input class="form-control " [(ngModel)]="task" [ngModelOptions]="{standalone: true}">
+            </form>
+        </div> -->
+    </div>
+    <div class="container-right">
+        <div class="container-right-top">
+            <div class="inner-top">
+                <h3>Other players' cards</h3>
+                <div class="row row-cols-1 row-cols-md-4 g-2">
+                    <div class="col" *ngFor="let xmpl of examples; let i = index; trackBy: trackById">
+                        <div class="card table">
+                            <div class="card-body table">
+                                <h5 class="card-title table">{{xmpl.userId}}</h5>
+                                <p class="card-text">{{xmpl.score}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="col-md-3">
-            <div class="card">
-                <div class="container bg-body-tertiary">
-                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
-                        <div
-                            class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                            <div class="fs-5">Scores
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
-                            <div class="list-group-item list-group-item-action py-3 lh-sm"
-                                *ngFor="let scr of scores.reverse(); let i = index; first as isFirst"
-                                [class.first-item]="isFirst">
-                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                    <strong class="mb-1">{{scr.username}}</strong>
-                                </div>
-                                <div class="col-10 mb-1 small">{{scr.score}}</div>
+        <div class="container-right-bottom">
+            <div class="inner-bottom-left">
+                <h3>Pick your points</h3>
+                <div class="row row-cols-1 row-cols-md-4 rowscore">
+                    <div *ngFor="let card of setOfCards; let i = index; trackBy: trackById" class="col">
+                        <div class="card points" [ngClass]="{ 'active-card': card.state }" (click)="onCardClick(card)">
+                            <div class="card-body points">
+                                <p class="card-text">{{card.value }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button class="btn btn-secondary" type="submit">Vote</button>
+                </div>
             </div>
-            <div class="gamechatcontainer">
-                <form (submit)="sendScore()">
-                    <input class="form-control " [(ngModel)]="score" [ngModelOptions]="{standalone: true}">
-                </form>
+            <div class="inner-bottom-right">
             </div>
-        </div> -->
-        <div class="col-md-9">
         </div>
     </div>
+</div>
