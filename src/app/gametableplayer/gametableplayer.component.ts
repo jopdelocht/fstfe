@@ -26,6 +26,7 @@ export class GametableplayerComponent {
 
   gameCode: string | null | undefined;
   role: string | null | undefined;
+  userId: string | null | undefined;
 
   username: string | null | undefined;
   scores: any[] = [];
@@ -194,6 +195,7 @@ export class GametableplayerComponent {
     this.gameCode = localStorage.getItem('gamecode');
     this.role = localStorage.getItem('role');
     this.username = localStorage.getItem('username');
+    this.userId = localStorage.getItem('userId');
 
     // Retrieving details from our freshly created game by gamecode
     const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
@@ -254,6 +256,7 @@ export class GametableplayerComponent {
 
   sendScore(): void {
     this.http.post('http://localhost:8000/api/scores', {
+      userid: this.userId,
       username: this.username,
       score: this.myCard,
       room: this.gameCode
