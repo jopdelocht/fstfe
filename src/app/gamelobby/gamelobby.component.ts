@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { GamesService } from '../shared/games.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-gamelobby',
@@ -14,7 +15,7 @@ import { GamesService } from '../shared/games.service';
 })
 export class GamelobbyComponent {
 
-  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService) { }
+  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService, private http: HttpClient) { }
 
   gamesURL = this.gamesService.gamesURL;
   gamesArray: any[] = [];
@@ -22,9 +23,12 @@ export class GamelobbyComponent {
   // Logic to display username in the header
   username: string | null | undefined;
   isLoggedIn: boolean = false;
+
+  userId: string | null | undefined;
   ngOnInit() {
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username');
+      this.userId = localStorage.getItem('userId');
     }
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
@@ -75,21 +79,22 @@ export class GamelobbyComponent {
         return result;
       };
 
-      let gameCode: string;
       let isDuplicate: boolean;
 
       // Generate random string and converts it to uppercase
       // Repeatedly generating new codes until it finds one that does not already exist in the gamesArray. 
       // Once a unique gameCode is found, the loop exits.
       do {
-        gameCode = generateRandomString(6).toUpperCase();
-        isDuplicate = this.gamesArray.some(game => game.gamecode === gameCode);
+        this.gameCode = generateRandomString(6).toUpperCase();
+        isDuplicate = this.gamesArray.some(game => game.gamecode === this.gameCode);
       } while (isDuplicate);
 
       localStorage.setItem('role', 'admin');
-      localStorage.setItem('gamecode', gameCode);
+      localStorage.setItem('gamecode', this.gameCode);
       await Promise.all([
-        this.gamesService.createGame(this.gameName, this.selectedSet, gameCode)]);
+        this.gamesService.createGame(this.gameName, this.selectedSet, this.gameCode)]);
+      // letting pusher know this user has joined a game
+      this.gamesService.joinGame(this.userId, this.username, this.gameCode);
 
       this.toastr.success('Game created successfully', "Success");
 
@@ -99,7 +104,7 @@ export class GamelobbyComponent {
   }
 
 
-  async joinGame() {
+  async joinGameByGameCode() {
     // First convert the gamecode to uppercase
     this.gameCodeCAPS = this.gameCode.toUpperCase();
 
@@ -126,8 +131,13 @@ export class GamelobbyComponent {
       localStorage.setItem('gamecode', this.gameCodeCAPS);
       this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametableplayer']);
+      // letting pusher know this user has joined a game
+      this.gamesService.joinGame(this.userId, this.username, this.gameCodeCAPS);
     }
+
   }
+
+
 
 
   //  STORED FOR FUTURE USE
