@@ -27,6 +27,7 @@ export class GametableadminComponent {
 
   gameCode: string | null | undefined;
   role: string | null | undefined;
+  userId: string | null | undefined;
 
   username: string | null | undefined;
   scores: any[] = [];
@@ -195,6 +196,7 @@ export class GametableadminComponent {
     this.gameCode = localStorage.getItem('gamecode');
     this.role = localStorage.getItem('role');
     this.username = localStorage.getItem('username');
+    this.userId = localStorage.getItem('userId');
 
     // Retrieving details from our freshly created game by gamecode
     const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
@@ -219,6 +221,7 @@ export class GametableadminComponent {
     let channel = pusher.subscribe(this.gameCode!);
     channel.bind('score', (data: any) => {
       this.scores.push(data);
+      console.log(this.scores);
     });
 
     channel.bind('task', (data: any) => {
@@ -254,8 +257,9 @@ export class GametableadminComponent {
 
   sendScore(): void {
     this.http.post('http://localhost:8000/api/scores', {
+      userid: this.userId,
       username: this.username,
-      score: this.score,
+      score: this.myCard,
       room: this.gameCode
     }).subscribe(() => this.score = '');
   }
@@ -266,5 +270,6 @@ export class GametableadminComponent {
       room: this.gameCode
     }).subscribe(() => this.task = '');
   }
+
 
 }

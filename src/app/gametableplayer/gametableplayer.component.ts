@@ -218,6 +218,7 @@ export class GametableplayerComponent {
     let channel = pusher.subscribe(this.gameCode!);
     channel.bind('score', (data: any) => {
       this.scores.push(data);
+      console.log(this.scores);
     });
 
     channel.bind('task', (data: any) => {
@@ -254,7 +255,7 @@ export class GametableplayerComponent {
   sendScore(): void {
     this.http.post('http://localhost:8000/api/scores', {
       username: this.username,
-      score: this.score,
+      score: this.myCard,
       room: this.gameCode
     }).subscribe(() => this.score = '');
   }
