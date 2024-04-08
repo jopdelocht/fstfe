@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GamesService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   gamesURL: string = 'http://localhost:8000/api/games/';
 
@@ -13,7 +14,7 @@ export class GamesService {
   async getGames() {
     const response = await fetch(this.gamesURL);
     const games = await response.json();
-    console.log(games);
+    //console.log(games);
     return games;
   }
 
@@ -21,7 +22,7 @@ export class GamesService {
   async getGameByGamecode(gamecode: any) {
     const result = await fetch(this.gamesURL + gamecode);
     const gameByGameCode = await result.json();
-    console.log(gameByGameCode);
+    //console.log(gameByGameCode);
     return gameByGameCode;
   }
 
@@ -43,16 +44,25 @@ export class GamesService {
       })
     };
     try {
+      // before proceeding
       const response = await fetch(this.gamesURL, options);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       return data;
     } catch (error) {
       console.error(error);
       throw error;
     }
+  }
+
+  joinGame(userId: any, username: any, room: any) {
+    this.http.post('http://localhost:8000/api/joingame', {
+      userid: userId,
+      username: username,
+      room: room
+    }).subscribe();
   }
 }
