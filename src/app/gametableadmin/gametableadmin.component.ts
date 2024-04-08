@@ -16,13 +16,21 @@ import { GamesService } from '../shared/games.service';
   styleUrl: './gametableadmin.component.css'
 })
 export class GametableadminComponent {
+  fixedPlayers = 8;
+  playersArray: any[] = [];
 
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private gamesService: GamesService) { }
+    private gamesService: GamesService) {
+    this.playersArray = Array.from({ length: this.fixedPlayers }, (_, index) => ({
+      userId: null,
+      score: null
+    }));
+  }
+
 
 
   gameCode: string | null | undefined;
@@ -40,6 +48,8 @@ export class GametableadminComponent {
   selectedCard: any; // Keep track of the selected card
 
   setOfCards: any[] = [];
+
+  joinedPlayers: any[] = [];
 
   // Cardvalues for testgame
   myCard: number = 0;
@@ -177,16 +187,8 @@ export class GametableadminComponent {
     }
   ]
 
-  examples: Array<any> = [
-    { userId: '1', score: null },
-    { userId: '2', score: null },
-    { userId: '3', score: null },
-    { userId: '4', score: null },
-    { userId: '5', score: null },
-    { userId: '6', score: null },
-    { userId: '7', score: null },
-    { userId: '8', score: null }
-  ];
+
+
 
   trackById(item: any): number {
     return item.id;
@@ -228,6 +230,12 @@ export class GametableadminComponent {
       this.tasks.push(data);
     });
 
+    channel.bind('joinedgame', (data: any) => {
+      this.joinedPlayers.push(data);
+      console.log('De array van gejoinde players is:')
+      console.log(this.joinedPlayers);
+    });
+
     for (let card of this.regularCards && this.fibonacciCards) {
       card.state = false;
     }
@@ -240,7 +248,7 @@ export class GametableadminComponent {
     });
     card.state = true;
     this.myCard = card.value;
-    console.log("My card:", this.myCard);
+    //console.log("My card:", this.myCard);
   }
 
   toLobby() {
@@ -261,7 +269,7 @@ export class GametableadminComponent {
       username: this.username,
       score: this.myCard,
       room: this.gameCode
-    }).subscribe(() => this.score = '');
+    }).subscribe();
   }
 
   sendTask(): void {

@@ -41,11 +41,11 @@
             <div class="inner-top">
                 <h3>Other players' cards</h3>
                 <div class="row row-cols-1 row-cols-md-4 g-2">
-                    <div class="col" *ngFor="let xmpl of examples; let i = index; trackBy: trackById">
+                    <div class="col" *ngFor="let plyr of playersArray; let i = index; trackBy: trackById">
                         <div class="card table">
                             <div class="card-body table">
-                                <h5 class="card-title table">{{xmpl.userId}}</h5>
-                                <p class="card-text">{{xmpl.score}}</p>
+                                <h5 class="card-title table">{{plyr.userId}}</h5>
+                                <p class="card-text">{{plyr.score}}</p>
                             </div>
                         </div>
                     </div>

@@ -16,13 +16,20 @@ import { GamesService } from '../shared/games.service';
   styleUrl: './gametableplayer.component.css'
 })
 export class GametableplayerComponent {
+  fixedPlayers = 8;
+  playersArray: any[] = [];
 
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private gamesService: GamesService) { }
+    private gamesService: GamesService) {
+    this.playersArray = Array.from({ length: this.fixedPlayers }, (_, index) => ({
+      userId: null,
+      score: null
+    }));
+  }
 
   gameCode: string | null | undefined;
   role: string | null | undefined;
@@ -39,6 +46,8 @@ export class GametableplayerComponent {
   selectedCard: any; // Keep track of the selected card
 
   setOfCards: any[] = [];
+
+  joinedPlayers: any[] = [];
 
   // Cardvalues for testgame
   myCard: number = 0;
@@ -221,6 +230,12 @@ export class GametableplayerComponent {
     channel.bind('score', (data: any) => {
       this.scores.push(data);
       console.log(this.scores);
+    });
+
+    channel.bind('joinedgame', (data: any) => {
+      this.joinedPlayers.push(data);
+      console.log('De array van gejoinde players is:')
+      console.log(this.joinedPlayers);
     });
 
     channel.bind('task', (data: any) => {
