@@ -7,9 +7,11 @@ import { GamelobbyComponent } from './gamelobby/gamelobby.component';
 import { ChatexampleComponent } from './chatexample/chatexample.component';
 import { GametableadminComponent } from './gametableadmin/gametableadmin.component';
 import { GametableplayerComponent } from './gametableplayer/gametableplayer.component';
+import { GametableDeactiveGuardClassGuard } from './guards/gametable-deactive-guard-class.guard';
 
 // Auth guard and login component
 import { authGuard } from './auth.guard';
+
 
 export const routes: Routes = [
     {
@@ -34,6 +36,7 @@ export const routes: Routes = [
         path: 'gametable',
         component: GametableComponent,
         canActivate: [authGuard],
+        canDeactivate: [GametableDeactiveGuardClassGuard]
     },
     {
         path: 'gametableadmin',
