@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { UserService } from './shared/user.service';
-
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -21,29 +20,33 @@ export class AppComponent {
   constructor(private toastr: ToastrService, private router: Router, private userService: UserService) {
   }
 
-  redirectToHome() {
-    location.replace('http://localhost:4200/home');
-  }
-  // Logout: delete token, username and userId
-  logout() {
-    localStorage.removeItem('token');
-    this.toastr.success('Logged out', 'Success');
-    setTimeout((this.redirectToHome), 2000);
-  }
   async ngOnInit() {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true;
       this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
       this.user = await this.userService.getUserById(this.userId);
       this.username = this.user.username;
+    } else {
+      return
     }
   }
 
+  redirectToHome() {
+    location.replace('http://localhost:4200/home');
+  }
+
+  async logout() {
+    localStorage.removeItem('token');
+    this.toastr.success('Logged out', 'Success');
+    setTimeout((this.redirectToHome), 2000);
+    await this.userService.removeUserRoleAndGameCode(this.userId);
+  }
+
   async navigateToGame() {
-    await Promise.all([
-      this.user = await this.userService.getUserById(this.userId)
-    ]);
     if (this.isLoggedIn == true) {
+      await Promise.all([
+        this.user = await this.userService.getUserById(this.userId)
+      ]);
       const role = this.user.role;
       if (!role) {
         this.router.navigate(['/gamelobby']);
