@@ -64,6 +64,7 @@ export class GametableComponent {
   setOfCardName: string = "";
   setOfCardID: number = 0;
 
+  // FIXED ARRAY OF CARDS //
   regularCards = [
     {
       id: 1,
@@ -190,31 +191,34 @@ export class GametableComponent {
     }
   ]
 
-  trackById(item: any): number {
-    return item.id;
-  }
 
+  // LOGIC ON INITIALIZATION //
   async ngOnInit() {
+    // GET & SET DATA //
+    // Retrieving userId from local storage, use it to fetch user
     this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
     this.user = await this.userService.getUserById(this.userId);
 
+    // Fill in variable values
     this.gameCode = this.user.gamecode;
     this.role = this.user.role;
     this.username = this.user.username;
 
-    // Retrieving SoC-name and SoC-id from freshlycreated game, by gamecode (id)
+    // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
     const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
     // Fill in variable values
     this.setOfCardName = gameByGameCode.setofcardname;
     this.setOfCardID = gameByGameCode.setofcard_id;
 
-    // Changing values in setOfCards depending on setOfCardID
+    // Changing values in setOfCards depending on SoC-id
     if (this.setOfCardID == 1) {
       this.setOfCards = this.regularCards;
     } else if (this.setOfCardID == 2) {
       this.setOfCards = this.fibonacciCards;
     }
 
+
+    // PUSHER BROADCASTING //
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
@@ -243,6 +247,9 @@ export class GametableComponent {
     }
   }
 
+
+  // GAMETABLE FUNCTIONALITY //
+
   // Changes the selected card state to true, changes all other cards state to false and stores value in myCard
   onCardClick(card: any): void {
     this.setOfCards.forEach((c: any) => {
@@ -254,35 +261,8 @@ export class GametableComponent {
   }
 
   toLobby() {
-    const confirmed = window.confirm('Are you sure you want to leave this game and return to the lobby?');
-    if (confirmed) {
-
-      this.userService.removeUserRoleAndGameCode(this.userId);
-
-      this.toastr.success('Welcome back to the lobby', 'Succes');
-      this.router.navigate(['/gamelobby']);
-    } else {
-      return;
-    }
+    this.router.navigate(['/gamelobby']);
   }
-
-  @HostListener('window:popstate', ['$event'])
-  onPopState() {
-    const confirmed = window.confirm('Are you sure you want to leave this game and return to the lobby?');
-    if (confirmed) {
-      this.userService.removeUserRoleAndGameCode(this.userId);
-      this.toastr.success('Welcome back to the lobby', 'Succes');
-      this.router.navigate(['/gamelobby']);
-    } else {
-      return;
-    }
-  }
-
-  // @HostListener('window:unload', ['$event'])
-  // unloadHandler(event: Event) {
-  //   this.userService.removeUserRoleAndGameCode(this.userId);
-  // }
-
 
   sendScore(): void {
     this.http.post('http://localhost:8000/api/scores', {
@@ -298,6 +278,10 @@ export class GametableComponent {
       task: this.task,
       room: this.gameCode
     }).subscribe(() => this.task = '');
+  }
+
+  trackById(item: any): number {
+    return item.id;
   }
 
 

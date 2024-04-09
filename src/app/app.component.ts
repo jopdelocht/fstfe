@@ -44,7 +44,10 @@ export class AppComponent {
     }
   }
 
-  navigateToGame() {
+  async navigateToGame() {
+    await Promise.all([
+      this.user = await this.userService.getUserById(this.userId)
+    ]);
     if (this.isLoggedIn == true) {
       const role = this.user.role;
       if (!role) {
