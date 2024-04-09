@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
+import { UserService } from './shared/user.service';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,13 +16,15 @@ import { ToastrService } from 'ngx-toastr';
 export class AppComponent {
   isLoggedIn: any;
   username: string | null | undefined;
-  constructor(private toastr: ToastrService, private router: Router) {
+  userId: any;
+  user: any;
+  constructor(private toastr: ToastrService, private router: Router, private userService: UserService) {
   }
 
   redirectToHome() {
     location.replace('http://localhost:4200/home');
   }
-  // Logout: delete token
+  // Logout: delete token, username and userId
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
@@ -29,23 +32,29 @@ export class AppComponent {
     this.toastr.success('Logged out', 'Success');
     setTimeout((this.redirectToHome), 2000);
   }
-  ngOnInit() {
+  async ngOnInit() {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true;
     }
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username');
+      this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
+      this.user = await this.userService.getUserById(this.userId);
+      console.log(this.user);
     }
   }
 
   navigateToGame() {
-    const role = localStorage.getItem('role');
-    if (!role) {
-      this.router.navigate(['/gamelobby']);
-    } else if (role === 'admin') {
-      this.router.navigate(['/gametableadmin']);
-    } else if (role === 'player') {
-      this.router.navigate(['/gametableplayer']);
+    if (this.isLoggedIn == true) {
+      const role = this.user.role;
+      if (!role) {
+        this.router.navigate(['/gamelobby']);
+      } else if (role) {
+        this.router.navigate(['/gametable']);
+      }
+    } else {
+      this.router.navigate(['/login']);
     }
   }
+
 }

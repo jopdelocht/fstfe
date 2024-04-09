@@ -1,7 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import Pusher from 'pusher-js';
+import { GamesService } from '../shared/games.service';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-gametable',
@@ -12,19 +18,51 @@ import { CommonModule } from '@angular/common';
 })
 export class GametableComponent {
 
-  constructor(private toastr: ToastrService) { }
+  fixedPlayers = 8;
+  playersArray: any[] = [];
+  user: any;
+
+  constructor(
+    private toastr: ToastrService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private gamesService: GamesService,
+    private userService: UserService) {
+    this.playersArray = Array.from({ length: this.fixedPlayers }, (_, index) => ({
+      userId: null,
+      score: null
+    }));
+  }
+
+
+  gameCode: string | null | undefined;
+  role: string | null | undefined;
+  userId: any;
+
+  username: string | null | undefined;
+  scores: any[] = [];
+  score: string = '';
+
+  tasks: any[] = [];
+  task: string = '';
 
   myCards: any;
   selectedCard: any; // Keep track of the selected card
-  chosenSet: any = "default";
-  // Keeping track of the selected set of cards coming from the select dropdown
-  selectedSet: any[] = [];
+
+  setOfCards: any[] = [];
+
+  joinedPlayers: any[] = [];
+
   // Cardvalues for testgame
   myCard: number = 0;
   cardBot1: number = 0;
   cardBot2: number = 0;
   objectBot1: any;
   objectBot2: any;
+
+  setOfCardName: string = "";
+  setOfCardID: number = 0;
 
   regularCards = [
     {
@@ -156,33 +194,111 @@ export class GametableComponent {
     return item.id;
   }
 
-  // Changes the selected card state to true, changes all other cards state to false and stores value in myCard
-  onCardClick(card: any): void {
-    this.selectedSet.forEach((c: any) => {
-      c.state = false;
+  async ngOnInit() {
+    this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
+    this.user = await this.userService.getUserById(this.userId);
+
+    this.gameCode = this.user.gamecode;
+    this.role = this.user.role;
+    this.username = this.user.username;
+
+    // Retrieving SoC-name and SoC-id from freshlycreated game, by gamecode (id)
+    const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
+    // Fill in variable values
+    this.setOfCardName = gameByGameCode.setofcardname;
+    this.setOfCardID = gameByGameCode.setofcard_id;
+
+    // Changing values in setOfCards depending on setOfCardID
+    if (this.setOfCardID == 1) {
+      this.setOfCards = this.regularCards;
+    } else if (this.setOfCardID == 2) {
+      this.setOfCards = this.fibonacciCards;
+    }
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    const pusher = new Pusher('640e9781247d1e8565c9', {
+      cluster: 'eu'
     });
-    card.state = true;
-    this.myCard = card.value;
-    console.log("My card:", this.myCard);
-  }
-  // oninit changes all states to false
-  ngOnInit(): void {
+
+    let channel = pusher.subscribe(this.gameCode!);
+    channel.bind('score', (data: any) => {
+      this.scores.push(data);
+      console.log(this.scores);
+    });
+
+    channel.bind('task', (data: any) => {
+      this.tasks.push(data);
+    });
+
+    channel.bind('joinedgame', (data: any) => {
+      this.joinedPlayers.push(data);
+      console.log('De array van gejoinde players is:')
+      console.log(this.joinedPlayers);
+    });
+
     for (let card of this.regularCards && this.fibonacciCards) {
       card.state = false;
     }
   }
 
-
-
-  startGame() {
-    this.objectBot1 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
-    this.objectBot2 = this.selectedSet[Math.floor(Math.random() * this.selectedSet.length)];
-    this.cardBot1 = this.objectBot1.value;
-    this.cardBot2 = this.objectBot2.value;
+  // Changes the selected card state to true, changes all other cards state to false and stores value in myCard
+  onCardClick(card: any): void {
+    this.setOfCards.forEach((c: any) => {
+      c.state = false;
+    });
+    card.state = true;
+    this.myCard = card.value;
+    //console.log("My card:", this.myCard);
   }
 
-  locationReload() {
-    window.location.reload();
+  toLobby() {
+    const confirmed = window.confirm('Are you sure you want to leave this game and return to the lobby?');
+    if (confirmed) {
+
+      this.userService.removeUserRoleAndGameCode(this.userId);
+
+      this.toastr.success('Welcome back to the lobby', 'Succes');
+      this.router.navigate(['/gamelobby']);
+    } else {
+      return;
+    }
   }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState() {
+    const confirmed = window.confirm('Are you sure you want to leave this game and return to the lobby?');
+    if (confirmed) {
+      this.userService.removeUserRoleAndGameCode(this.userId);
+      this.toastr.success('Welcome back to the lobby', 'Succes');
+      this.router.navigate(['/gamelobby']);
+    } else {
+      return;
+    }
+  }
+
+  // @HostListener('window:unload', ['$event'])
+  // unloadHandler(event: Event) {
+  //   this.userService.removeUserRoleAndGameCode(this.userId);
+  // }
+
+
+  sendScore(): void {
+    this.http.post('http://localhost:8000/api/scores', {
+      userid: this.userId,
+      username: this.username,
+      score: this.myCard,
+      room: this.gameCode
+    }).subscribe();
+  }
+
+  sendTask(): void {
+    this.http.post('http://localhost:8000/api/tasks', {
+      task: this.task,
+      room: this.gameCode
+    }).subscribe(() => this.task = '');
+  }
+
 
 }

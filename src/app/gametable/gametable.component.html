@@ -1,78 +1,104 @@
-<!-- <div class="col-md-12">
-            <div class="input-group m-2">
-                <span class="input-group-text" id="inputGroup-sizing-default"><label
-                        for="stockName">Kaartspel</label></span>
-                <select type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                    class="form-control" [(ngModel)]="myCards">
-                    @for (regularCard of regularCards; track regularCard.id) {
-                    <option value [value]="regularCard.value">{{ regularCard.value }}</option>
-                    }
-                </select>
+<div class="container-all">
+    <div class="container-left">
+        <div class="card user-details">
+            <div class="card-body">
+                User: <strong>{{username}}</strong><br>
+                Your role: <strong>{{role}}</strong><br>
+                Your cardset: <strong>{{setOfCardName}}</strong><br>
+                Your gamecode: <strong>{{gameCode}}</strong>
+                <div class="d-flex">
+                    <button class="btn btn-secondary mt-2" type="submit" (click)="toLobby()">To lobby</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container bg-body-tertiary">
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+                    <div
+                        class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                        <div class="titletask fs-5">Tasks
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
+                        <!-- display results in reverse -->
+                        <div class="list-group-item list-group-item-action py-3 lh-sm"
+                            *ngFor="let tsk of tasks.reverse(); let i = index; first as isFirst"
+                            [class.first-item]="isFirst">
+                            <div class="col-10 mb-1 small">{{tsk.task}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gamechatcontainer">
+            <form (submit)="sendTask()">
+                <input class="form-control " [(ngModel)]="task" [ngModelOptions]="{standalone: true}">
+            </form>
+        </div>
+    </div>
+    <div class="container-right">
+        <div class="container-right-top">
+            <div class="inner-top">
+                <h3>Other players' cards</h3>
+                <div class="row row-cols-1 row-cols-md-4 g-2">
+                    <div class="col" *ngFor="let plyr of playersArray; let i = index; trackBy: trackById">
+                        <div class="card table">
+                            <div class="card-body table">
+                                <h5 class="card-title table">{{plyr.userId}}</h5>
+                                <p class="card-text">{{plyr.score}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-right-bottom">
+            <div class="inner-bottom-left">
+                <h3>Pick your points</h3>
+                <div class="row row-cols-1 row-cols-md-4 rowscore">
+                    <div *ngFor="let card of setOfCards; let i = index; trackBy: trackById" class="col">
+                        <div class="card points" [ngClass]="{ 'active-card': card.state }" (click)="onCardClick(card)">
+                            <div class="card-body points">
+                                <p class="card-text">{{card.value }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button class="btn btn-secondary" type="submit" (click)="sendScore()">Vote</button>
+                </div>
+            </div>
+            <div class="inner-bottom-right">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="col-md-3">
+            <div class="card">
+                <div class="container bg-body-tertiary">
+                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+                        <div
+                            class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                            <div class="fs-5">Scores
+                            </div>
+                        </div>
+                        <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
+                            <div class="list-group-item list-group-item-action py-3 lh-sm"
+                                *ngFor="let scr of scores.reverse(); let i = index; first as isFirst"
+                                [class.first-item]="isFirst">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <strong class="mb-1">{{scr.username}}</strong>
+                                </div>
+                                <div class="col-10 mb-1 small">{{scr.score}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gamechatcontainer">
+                <form (submit)="sendScore()">
+                    <input class="form-control " [(ngModel)]="score" [ngModelOptions]="{standalone: true}">
+                </form>
             </div>
         </div> -->
-<div class="container">
-    <div class="row">
-        <div class="top-container">
-            <div class="col-md-2">
-                <div class="d-grid d-md-flex justify-content-md-center">
-                    <i class="fa-solid fa-rotate-right" (click)="locationReload()"></i>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="d-grid d-md-flex justify-content-md-center">
-                    <div class="card task">
-                        <div class="card-body">
-                            <h5 class="card-title">TASK-9998 - [BACK][RESEARCH]</h5>
-                            <p class="card-text">Method/trans/user does not work with a valid
-                                access token</p>
-                            <a href="#" class="card-link">Clickup</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="d-grid d-md-flex justify-content-md-center">
-                    <i class="fa-solid fa-forward"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 leftcontainer">
-            <div class="card" style="width: 7rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{this.cardBot1}}</h5>
-                    <p class="card-text">Bot 1</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="d-grid d-md-flex justify-content-md-center">
-                <button type="button" class="btn btn-primary btn-lg" (click)="startGame()">Start
-                    game</button>
-            </div>
-
-            <h3>Pick your points</h3>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div *ngFor="let card of selectedSet; let i = index; trackBy: trackById" class="col">
-                    <div class="card playing h-100" [ngClass]="{ 'active-card': card.state }"
-                        (click)="onCardClick(card)">
-                        <div class="card-body">
-                            <p class="card-text">{{card.value }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 rightcontainer">
-            <div class="card" style="width: 7rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{cardBot2}}</h5>
-                    <p class="card-text">Bot 2</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

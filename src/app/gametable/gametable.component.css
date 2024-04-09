@@ -6,42 +6,65 @@ Sky Blue: #6BC7F0
 Navy Blue: #191825
 */
 
-h1 {
-    font-family: 'Assistant', sans-serif;
-    font-weight: 700;
+/* CONTAINERS */
+.container-all {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.container-left {
+    min-width: 17rem;
+    margin: 1rem;
+}
+
+.container-right {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.container-right-top {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-right-bottom {
+    display: flex;
+    flex-direction: row;
+}
+
+.inner-top {
+    width: 41rem;
+    height: 24rem;
+    margin: 0.5rem;
+}
+
+.inner-bottom-left {
+    width: 20rem;
+    height: 16rem;
+    margin: 0.5rem;
+}
+
+.inner-bottom-right {
+    width: 20rem;
+    height: 16rem;
+    margin: 0.5rem;
+}
+
+/* Basic styling */
+body {
+    text-align: center;
 }
 
 h3 {
-    font-family: "Assistant", sans-serif;
+    font-family: 'Assistant', sans-serif;
     font-weight: 700;
-    font-size: 1.4rem;
-    text-align: center;
-    margin-bottom: 0.7rem;
+    margin-bottom: 1rem;
 }
 
-/* TASK CARDS */
-h5.card-title {
-    font-family: "Assistant", sans-serif;
-    margin-bottom: 0.1rem;
-}
-
-.card.task {
-    width: 30rem;
-}
-
-p.card-text {
-    margin-bottom: 0.2rem;
-    font-family: 'Assistant', sans-serif;
-}
-
-a.card-link {
-    color: #6BC7F0;
-    font-family: 'Assistant', sans-serif;
-    font-size: small;
-}
-
-/* BUTTON reveal cards */
-.btn.btn-primary.btn-lg {
+/* BUTTONS */
+.btn-secondary {
     --bs-btn-color: white;
     --bs-btn-bg: #E54758;
     --bs-btn-border-color: none;
@@ -57,85 +80,124 @@ a.card-link {
     --bs-btn-disabled-bg: none;
     --bs-btn-disabled-border-color: none;
     font-family: 'Assistant', sans-serif;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    font-weight: 400;
 }
 
-/* .container.bottom {
-    height: 100%;
-} */
-
-/* SET OF CARDS SELECTION */
-.form-select {
+/* User details card - upper left corner */
+.card.user-details {
     font-family: 'Assistant', sans-serif;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-.form-select:focus {
+/* Scroll area for the task area */
+.scrollarea {
+    height: 25rem;
+    overflow-y: scroll;
+    z-index: 0;
+}
+
+/* Title of the taskarea */
+.titletask.fs-5 {
+    font-family: 'Assistant', sans-serif;
+}
+
+/* Input area of the taskarea */
+.form-control {
+    font-family: 'Assistant', sans-serif;
+}
+
+.form-control:focus {
     border-color: #6BC7F0;
     box-shadow: 0 0 0 0.2rem rgba(107, 200, 240, 0.329);
+    /* rgba(107, 199, 240, 1) */
+}
+
+.gamechatcontainer {
+    z-index: 1;
+    margin-top: 0.5rem;
+}
+
+/* colour of the task area */
+.list-group {
+    --bs-list-group-color: #aeaeae;
+    --bs-list-group-bg: #F8F9FA;
+    --bs-list-group-border-color: var(--bs-border-color);
+    --bs-list-group-border-width: var(--bs-border-width);
+    --bs-list-group-border-radius: var(--bs-border-radius);
+    --bs-list-group-item-padding-x: 1rem;
+    --bs-list-group-item-padding-y: 0.5rem;
+    --bs-list-group-action-color: #F8F9FA;
+    --bs-list-group-action-hover-color: #aeaeae;
+    --bs-list-group-action-hover-bg: #F8F9FA;
+    --bs-list-group-action-active-color: #F8F9FA;
+    --bs-list-group-action-active-bg: #F8F9FA;
+    --bs-list-group-disabled-color: #F8F9FA;
+    --bs-list-group-disabled-bg: #F8F9FA;
+    --bs-list-group-active-color: #F8F9FA;
+    --bs-list-group-active-bg: #F8F9FA;
+    --bs-list-group-active-border-color: #F8F9FA;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
+}
+
+/* Colour of the first item in the tasks array */
+.first-item {
+    background: #d9dada;
+    color: #191825
 }
 
 
-/* PLAYING CARDS */
-.card.playing {
+/* TABLE CARDS */
+.table {
+    margin-bottom: 0;
+}
+
+.card.table {
     --bs-card-spacer-y: 0.6rem;
     --bs-card-spacer-x: 0.2rem;
     font-family: 'Assistant', sans-serif;
     font-weight: 700;
     text-align: center;
     vertical-align: middle;
+    min-height: 9.5rem;
 }
 
-.active-card {
+.card-body.table {
+    align-content: center;
+    padding: 0;
+}
+
+.card-title.table {
+    margin-bottom: 0;
+}
+
+
+/* YOUR POINTS CARDS */
+.card.points {
+    --bs-card-spacer-y: 0.6rem;
+    --bs-card-spacer-x: 0.2rem;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    min-height: 3.5rem;
+}
+
+.card-body.points {
+    align-content: center;
+}
+
+.active-card.points {
     background-color: #6BC7F0;
     color: white;
 }
 
-.card.playing:hover {
+.card.points:hover {
     cursor: pointer;
     background-color: #E54758;
     color: white;
 }
 
-/* Space between playing cards */
-.g-4 {
+.rowscore {
     --bs-gutter-y: 0.5rem;
     --bs-gutter-x: 0.5rem;
-}
-
-.top-container {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.leftcontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-}
-
-.rightcontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-}
-
-.fa-solid {
-    font-size: 2rem;
-}
-
-.fa-rotate-right:hover {
-    cursor: pointer;
-    color: #E54758;
-}
-
-.fa-forward:hover {
-    cursor: pointer;
-    color: #E54758;
 }

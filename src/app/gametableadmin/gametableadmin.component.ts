@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import Pusher from 'pusher-js';
 import { GamesService } from '../shared/games.service';
+
 
 @Component({
   selector: 'app-gametableadmin',
@@ -30,6 +31,7 @@ export class GametableadminComponent {
       score: null
     }));
   }
+
 
 
 

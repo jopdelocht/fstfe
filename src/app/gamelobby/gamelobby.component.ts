@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { GamesService } from '../shared/games.service';
 import { HttpClient } from '@angular/common/http';
-
+import { UserService } from '../shared/user.service';
 @Component({
   selector: 'app-gamelobby',
   standalone: true,
@@ -15,24 +15,33 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GamelobbyComponent {
 
-  constructor(public cardService: CardService, private router: Router, private toastr: ToastrService, private gamesService: GamesService, private http: HttpClient) { }
+  constructor(
+    private userService: UserService,
+    public cardService: CardService,
+    private router: Router,
+    private toastr: ToastrService,
+    private gamesService: GamesService,
+    private http: HttpClient) { }
 
   gamesURL = this.gamesService.gamesURL;
   gamesArray: any[] = [];
+  userId: any;
+  user: any;
 
   // Logic to display username in the header
   username: string | null | undefined;
   isLoggedIn: boolean = false;
 
-  userId: string | null | undefined;
-  ngOnInit() {
-    if (localStorage.getItem('username')) {
-      this.username = localStorage.getItem('username');
-      this.userId = localStorage.getItem('userId');
-    }
+  async ngOnInit() {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
     }
+
+    this.username = localStorage.getItem('username');
+    // fetch the user based on the userId stored in local storage
+    this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
+    this.user = await this.userService.getUserById(this.userId);
+
     this.fetchGames();
   }
 
@@ -89,17 +98,17 @@ export class GamelobbyComponent {
         isDuplicate = this.gamesArray.some(game => game.gamecode === this.gameCode);
       } while (isDuplicate);
 
-      localStorage.setItem('role', 'admin');
-      localStorage.setItem('gamecode', this.gameCode);
       await Promise.all([
-        this.gamesService.createGame(this.gameName, this.selectedSet, this.gameCode)]);
+        this.gamesService.createGame(this.gameName, this.selectedSet, this.gameCode),
+        this.userService.updateUserRoleAndGameCode(this.userId, 'admin', this.gameCode)
+      ]);
       // letting pusher know this user has joined a game
       this.gamesService.joinGame(this.userId, this.username, this.gameCode);
 
       this.toastr.success('Game created successfully', "Success");
 
       // Navigating to gametableadmin
-      this.router.navigate(['/gametableadmin']);
+      this.router.navigate(['/gametable']);
     }
   }
 
@@ -127,10 +136,13 @@ export class GamelobbyComponent {
     }
     // sets role and gamecode in localstorage, navigates to gametable player with, after checking if gamecode is valid
     else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeCAPS)) {
-      localStorage.setItem('role', 'player')
-      localStorage.setItem('gamecode', this.gameCodeCAPS);
+
+      await Promise.all([
+        this.userService.updateUserRoleAndGameCode(this.userId, 'player', this.gameCodeCAPS)
+      ]);
+
       this.toastr.success('Game joined successfully', "Success");
-      this.router.navigate(['/gametableplayer']);
+      this.router.navigate(['/gametable']);
       // letting pusher know this user has joined a game
       this.gamesService.joinGame(this.userId, this.username, this.gameCodeCAPS);
     }

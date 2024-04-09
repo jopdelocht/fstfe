@@ -11,10 +11,10 @@ export class UserService {
   constructor(private router: Router, private toastr: ToastrService) { }
 
   // Put Users API Endpoint URL in constant
-  userURL: string = 'http://localhost:8000/users/';
+  userURL: string = 'http://localhost:8000/api/users';
 
-  // Post User URL
-  postUserURL: string = 'http://localhost:8000/api/users/';
+
+
 
   // User register method => Hashing on backend
   async register(username: any, password: any, email: any) {
@@ -27,7 +27,7 @@ export class UserService {
         password: password,
         email: email
       };
-      const result = await fetch(this.postUserURL, {
+      const result = await fetch(this.userURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,6 +52,56 @@ export class UserService {
     // console.log(users)
     return users;
   }
+
+  async getUserById(id: number) {
+    const response = await fetch(this.userURL + '/' + id);
+    const user = await response.json();
+    return user;
+  }
+
+  // Update player's role and gamecode
+  async updateUserRoleAndGameCode(userId: number, role: string, gameCode: string) {
+    const token = localStorage.getItem('token');
+    const item = {
+      role: role,
+      gamecode: gameCode
+    }
+    const result = await fetch('http://localhost:8000/api/update-user-role-gamecode/' + userId, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(item)
+    })
+    if (!result.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await result.json();
+    return data;
+  }
+
+  // Update player's role and gamecode
+  async removeUserRoleAndGameCode(userId: number) {
+    const token = localStorage.getItem('token');
+
+    const result = await fetch('http://localhost:8000/api/remove-user-role-gamecode/' + userId, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+        Authorization: 'Bearer ' + token
+      }
+    })
+    if (!result.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await result.json();
+    return data;
+  }
+
+
 
   // Login method to return token
   async login(username: string, password: string) {
