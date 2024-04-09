@@ -27,20 +27,15 @@ export class AppComponent {
   // Logout: delete token, username and userId
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userId');
     this.toastr.success('Logged out', 'Success');
     setTimeout((this.redirectToHome), 2000);
   }
   async ngOnInit() {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true;
-    }
-    if (localStorage.getItem('username')) {
-      this.username = localStorage.getItem('username');
       this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
       this.user = await this.userService.getUserById(this.userId);
-      console.log(this.user);
+      this.username = this.user.username;
     }
   }
 

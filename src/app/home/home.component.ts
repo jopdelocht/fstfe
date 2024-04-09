@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-home',
@@ -12,16 +13,18 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
-  username: string | null | undefined;
   isLoggedIn: boolean = false;
-  ngOnInit() {
-    if (localStorage.getItem('username')) {
-      this.username = localStorage.getItem('username');
-    }
+  username: string | null | undefined;
+  userId: any;
+  user: any;
+  async ngOnInit() {
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true
+      this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
+      this.user = await this.userService.getUserById(this.userId);
+      this.username = this.user.username;
     }
   }
 

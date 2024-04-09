@@ -33,7 +33,6 @@ export class LoginComponent {
       const token = await this.userService.login(this.username, this.password);
       if (token) {
         localStorage.setItem('token', token)
-        localStorage.setItem('username', this.username);
         this.toastr.success('Logged in', 'Succes');
         setTimeout((this.redirectToHome), 2000);
       } else {
