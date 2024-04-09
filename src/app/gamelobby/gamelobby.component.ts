@@ -27,53 +27,50 @@ export class GamelobbyComponent {
   gamesArray: any[] = [];
   userId: any;
   user: any;
+  username: string = "";
 
-  // Logic to display username in the header
-  username: string | null | undefined;
-  isLoggedIn: boolean = false;
-
+  // LOGIC ON INITIALIZATION //
   async ngOnInit() {
-    if (localStorage.getItem('token')) {
-      this.isLoggedIn = true
-    }
-
-    this.username = localStorage.getItem('username');
-    // fetch the user based on the userId stored in local storage
+    // GET & SET DATA //
+    // Retrieving userId from local storage, use it to fetch user
     this.userId = parseInt(localStorage.getItem('userId') ?? '0', 10);;
-    this.user = await this.userService.getUserById(this.userId);
 
-    this.fetchGames();
+    this.user = await this.userService.getUserById(this.userId);
+    await this.fetchGames()
+
+    this.username = this.user.username;
+
   }
 
-  // fetching data from games table, needed for duplicate gameCode check
+  //    CREATING A GAME     //
+
+  // fetching all games from games table, needed for duplicate gameCode check when creating a new game
   async fetchGames() {
     this.gamesArray = await this.gamesService.getGames();
   }
 
-  // storing sessionname and gameCode in variable
-  gameName: string = "";
-  gameCode: string = "";
+  // storing gameName and gameCode in variable, needed for creating a new game
+  gameNameOnCreate: string = "";
+  gameCodeOnCreate: string = "";
 
-  // gamecode CAPS conversion variable
-  gameCodeCAPS: string = "";
 
   // when the user selects a cardset from the dropdown menu (myCardSet), store the value in selectedSet
-  myCardSet: any = "default";
+  myCardSetOnCreate: any = "default";
   selectedSet: number = 0;
 
-  updateSelectedCards(myCardSet: any) {
-    if (myCardSet === "1") {
+  updateSelectedCards(myCardSetOnCreate: any) {
+    if (myCardSetOnCreate === "1") {
       this.selectedSet = 1;
-    } else if (myCardSet === "2") {
+    } else if (myCardSetOnCreate === "2") {
       this.selectedSet = 2;
     }
   }
 
   async createGame() {
-    if (!this.gameName || this.myCardSet === "default") {
+    if (!this.gameNameOnCreate || this.myCardSetOnCreate === "default") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
-    } else if (this.gameName && this.myCardSet) {
+    } else if (this.gameNameOnCreate && this.myCardSetOnCreate) {
       // First refresh the array before checking for a duplicate
       await this.fetchGames();
 
@@ -94,59 +91,65 @@ export class GamelobbyComponent {
       // Repeatedly generating new codes until it finds one that does not already exist in the gamesArray. 
       // Once a unique gameCode is found, the loop exits.
       do {
-        this.gameCode = generateRandomString(6).toUpperCase();
-        isDuplicate = this.gamesArray.some(game => game.gamecode === this.gameCode);
+        this.gameCodeOnCreate = generateRandomString(6).toUpperCase();
+        isDuplicate = this.gamesArray.some(game => game.gamecode === this.gameCodeOnCreate);
       } while (isDuplicate);
 
       await Promise.all([
-        this.gamesService.createGame(this.gameName, this.selectedSet, this.gameCode),
-        this.userService.updateUserRoleAndGameCode(this.userId, 'admin', this.gameCode)
+        this.gamesService.createGame(this.gameNameOnCreate, this.selectedSet, this.gameCodeOnCreate),
+        this.userService.updateUserRoleAndGameCode(this.userId, 'admin', this.gameCodeOnCreate),
       ]);
-      // letting pusher know this user has joined a game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCode);
+      // pusher broadcast --> player joined the game
+      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnCreate),
+        console.log(this.userId, this.username, this.gameCodeOnCreate)
 
-      this.toastr.success('Game created successfully', "Success");
-
-      // Navigating to gametableadmin
+      this.toastr.success('Game created successfully', "Success")
       this.router.navigate(['/gametable']);
     }
   }
 
 
+  //    JOINING A GAME     //
+
+  // storing gameCode in variable, needed for joining a game
+  gameCodeOnJoin: string = "";
+  // gamecode CAPS conversion variable
+  gameCodeOnJoinToCAPS: string = "";
+
   async joinGameByGameCode() {
     // First convert the gamecode to uppercase
-    this.gameCodeCAPS = this.gameCode.toUpperCase();
+    this.gameCodeOnJoinToCAPS = this.gameCodeOnJoin.toUpperCase();
 
     // throw error if not filled in completely
-    if (!this.gameCodeCAPS) {
+    if (!this.gameCodeOnJoinToCAPS) {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
       // throw error if not filled in correctly, string must be 6 characters long
-    } else if (this.gameCodeCAPS.length !== 6) {
+    } else if (this.gameCodeOnJoinToCAPS.length !== 6) {
       this.toastr.error('The number of characters must be 6', 'Error');
       return;
-
     }
+
     // first refresh the array before checking for a duplicate
     await this.fetchGames();
     // throw error after checking if gamecode is valid
-    if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeCAPS)) {
+    if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeOnJoinToCAPS)) {
       this.toastr.error('Provided gamecode is not valid', 'Error');
       return;
     }
+
     // sets role and gamecode in localstorage, navigates to gametable player with, after checking if gamecode is valid
-    else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeCAPS)) {
+    else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeOnJoinToCAPS)) {
 
       await Promise.all([
-        this.userService.updateUserRoleAndGameCode(this.userId, 'player', this.gameCodeCAPS)
-      ]);
+        this.userService.updateUserRoleAndGameCode(this.userId, 'player', this.gameCodeOnJoinToCAPS),
 
+      ]);
+      // pusher broadcast --> player joined the game
+      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnJoinToCAPS)
       this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametable']);
-      // letting pusher know this user has joined a game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCodeCAPS);
     }
-
   }
 
 

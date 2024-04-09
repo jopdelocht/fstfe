@@ -9,9 +9,9 @@
                     <div class="card-body">
                         <h3>Create game</h3>
                         <input class="form-control username mb-2" type="text" placeholder="Game name"
-                            [(ngModel)]="gameName">
-                        <select class="form-select mb-2" [(ngModel)]="myCardSet"
-                            (change)="updateSelectedCards(myCardSet)">
+                            [(ngModel)]="gameNameOnCreate">
+                        <select class="form-select mb-2" [(ngModel)]="myCardSetOnCreate"
+                            (change)="updateSelectedCards(myCardSetOnCreate)">
                             <option value="default" disabled>Set of cards:</option>
                             <option value="1">Regular</option>
                             <option value="2">Fibonacci</option>
@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <h3>Join game</h3>
                         <input class="form-control username mb-2" type="text" placeholder="Gamecode"
-                            [(ngModel)]="gameCode">
+                            [(ngModel)]="gameCodeOnJoin">
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-secondary" type="submit" (click)="joinGameByGameCode()">Join</button>
                         </div>
