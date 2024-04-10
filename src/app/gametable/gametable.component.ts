@@ -289,5 +289,10 @@ export class GametableComponent {
     return item.id;
   }
 
+  deletePlayer(userid: number, gamecode: string) {
+    this.gamesService.leaveGame(userid, gamecode);
+    this.userService.removeUserRoleAndGameCode(userid);
+  }
+
 
 }

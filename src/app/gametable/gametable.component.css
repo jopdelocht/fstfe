@@ -201,3 +201,13 @@ h3 {
     --bs-gutter-y: 0.5rem;
     --bs-gutter-x: 0.5rem;
 }
+
+
+.fa-trash-can {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: small;
+    color: grey;
+}

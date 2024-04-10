@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="gamechatcontainer">
+        <div class="gamechatcontainer" *ngIf="role === 'admin'">
             <form (submit)="sendTask()">
                 <input class="form-control " [(ngModel)]="task" [ngModelOptions]="{standalone: true}">
             </form>
@@ -44,6 +44,8 @@
                     <div class="col" *ngFor="let player of joinedPlayersArray; let i = index; trackBy: trackById">
                         <div class="card table">
                             <div class="card-body table">
+                                <i class="fa-regular fa-trash-can"
+                                    (click)="deletePlayer(player.userid, player.gamecode)"></i>
                                 <p class="card-text">{{player.username}}</p>
                             </div>
                         </div>
