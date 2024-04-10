@@ -18,25 +18,18 @@ import { UserService } from '../shared/user.service';
 })
 export class GametableComponent {
 
-  fixedPlayers = 8;
-  playersArray: any[] = [];
-  user: any;
-
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
     private gamesService: GamesService,
-    private userService: UserService) {
-    this.playersArray = Array.from({ length: this.fixedPlayers }, (_, index) => ({
-      userId: null,
-      score: null
-    }));
-  }
+    private userService: UserService) { }
 
+  user: any;
+  joinedPlayersArray: any[] = [];
 
-  gameCode: string | null | undefined;
+  gameCode: any;
   role: string | null | undefined;
   userId: any;
 
@@ -52,7 +45,6 @@ export class GametableComponent {
 
   setOfCards: any[] = [];
 
-  joinedPlayers: any[] = [];
 
   // Cardvalues for testgame
   myCard: number = 0;
@@ -204,6 +196,8 @@ export class GametableComponent {
     this.role = this.user.role;
     this.username = this.user.username;
 
+    this.joinedPlayersArray = await this.userService.getUsersByGameCode(this.gameCode);
+
     // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
     const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
     // Fill in variable values
@@ -237,9 +231,20 @@ export class GametableComponent {
     });
 
     channel.bind('joinedgame', (data: any) => {
-      this.joinedPlayers.push(data);
-      console.log('De array van gejoinde players is:')
-      console.log(this.joinedPlayers);
+      this.joinedPlayersArray.push(data);
+      console.log('Hieronder een array van alle spelers die momenteel in het spel zitten:')
+      console.log(this.joinedPlayersArray);
+    });
+
+    channel.bind('leftgame', (data: any) => {
+      console.log(data);
+      // Find and remove the user from the array of joined players
+      const index = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
+      if (index !== -1) {
+        this.joinedPlayersArray.splice(index, 1);
+      }
+      console.log('Hieronder een array van alle spelers die momenteel in het spel zitten:')
+      console.log(this.joinedPlayersArray);
     });
 
     for (let card of this.regularCards && this.fibonacciCards) {

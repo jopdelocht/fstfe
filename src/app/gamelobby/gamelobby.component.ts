@@ -28,6 +28,7 @@ export class GamelobbyComponent {
   userId: any;
   user: any;
   username: string = "";
+  score: number | null = null;
 
   // LOGIC ON INITIALIZATION //
   async ngOnInit() {
@@ -100,10 +101,11 @@ export class GamelobbyComponent {
         this.userService.updateUserRoleAndGameCode(this.userId, 'admin', this.gameCodeOnCreate),
       ]);
       // pusher broadcast --> player joined the game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnCreate),
-        console.log(this.userId, this.username, this.gameCodeOnCreate)
+      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnCreate);
+      console.log(this.userId, this.username, this.gameCodeOnCreate);
 
-      this.toastr.success('Game created successfully', "Success")
+      localStorage.setItem('gameCode', this.gameCodeOnCreate);
+      this.toastr.success('Game created successfully', "Success");
       this.router.navigate(['/gametable']);
     }
   }
@@ -146,7 +148,9 @@ export class GamelobbyComponent {
 
       ]);
       // pusher broadcast --> player joined the game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnJoinToCAPS)
+      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnJoinToCAPS);
+
+      localStorage.setItem('gameCode', this.gameCodeOnJoinToCAPS);
       this.toastr.success('Game joined successfully', "Success");
       this.router.navigate(['/gametable']);
     }

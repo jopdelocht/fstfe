@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { UserService } from './shared/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { GamesService } from './shared/games.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent {
   username: string | null | undefined;
   userId: any;
   user: any;
-  constructor(private toastr: ToastrService, private router: Router, private userService: UserService) {
+  constructor(private toastr: ToastrService, private router: Router, private userService: UserService, private gamesService: GamesService) {
   }
 
   async ngOnInit() {
@@ -47,11 +48,16 @@ export class AppComponent {
       await Promise.all([
         this.user = await this.userService.getUserById(this.userId)
       ]);
-      const role = this.user.role;
-      if (!role) {
+      const gamecode = this.user.gamecode;
+      console.log('The users gamecode is: ' + gamecode);
+      if (!gamecode) {
         this.router.navigate(['/gamelobby']);
-      } else if (role) {
-        this.router.navigate(['/gametable']);
+      } else if (gamecode) {
+        // when a user has a gamecode, patch the gamecode to NULL and navigate to gamelobby - Pusher
+        this.gamesService.leaveGame(this.userId, gamecode);
+        // also remove gamecode and role from database
+        this.userService.removeUserRoleAndGameCode(this.userId);
+        this.router.navigate(['/gamelobby']);
       }
     } else {
       this.router.navigate(['/login']);

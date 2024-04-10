@@ -257,7 +257,7 @@ export class GametableadminComponent {
     const confirmed = window.confirm('Leaving this game as an admin could lead to malfunctions. Are you sure?');
     if (confirmed) {
       localStorage.removeItem('role');
-      localStorage.removeItem('gamecode');
+      localStorage.removeItem('gameCode');
       this.toastr.success('Welcome back to the lobby', 'Succes');
       this.router.navigate(['/gamelobby']);
     } else {

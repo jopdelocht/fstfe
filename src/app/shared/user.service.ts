@@ -53,13 +53,20 @@ export class UserService {
     return users;
   }
 
+  // get all users by gamecode
+  async getUsersByGameCode(gamecode: number) {
+    const response = await fetch('http://127.0.0.1:8000/api/users-by-gamecode/' + gamecode);
+    const usersByGameCode = await response.json();
+    return usersByGameCode;
+  }
+
   async getUserById(id: number) {
     const response = await fetch(this.userURL + '/' + id);
     const user = await response.json();
     return user;
   }
 
-  // Update player's role and gamecode
+  // Update player's role and gamecode -> used when player joins or creates game - GAMELOBBY
   async updateUserRoleAndGameCode(userId: number, role: string, gameCode: string) {
     const token = localStorage.getItem('token');
     const item = {
@@ -82,7 +89,7 @@ export class UserService {
     return data;
   }
 
-  // Update player's role and gamecode
+  // Remove player's role and gamecode -> used when player leaves a game - GAMETABLE, LOGOUT
   async removeUserRoleAndGameCode(userId: number) {
     const token = localStorage.getItem('token');
 
