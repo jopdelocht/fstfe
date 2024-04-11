@@ -27,7 +27,7 @@ export class GamelobbyComponent {
   gamesArray: any[] = [];
   userId: any;
   user: any;
-  username: string = "";
+  userName: string = "";
   score: number | null = null;
 
   // LOGIC ON INITIALIZATION //
@@ -39,7 +39,7 @@ export class GamelobbyComponent {
     this.user = await this.userService.getUserById(this.userId);
     await this.fetchGames()
 
-    this.username = this.user.username;
+    this.userName = this.user.username;
 
   }
 
@@ -68,6 +68,7 @@ export class GamelobbyComponent {
   }
 
   async createGame() {
+    const role = 'admin';
     if (!this.gameNameOnCreate || this.myCardSetOnCreate === "default") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
@@ -98,11 +99,9 @@ export class GamelobbyComponent {
 
       await Promise.all([
         this.gamesService.createGame(this.gameNameOnCreate, this.selectedSet, this.gameCodeOnCreate),
-        this.userService.updateUserRoleAndGameCode(this.userId, 'admin', this.gameCodeOnCreate),
+        this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnCreate)
       ]);
-      // pusher broadcast --> player joined the game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnCreate);
-      console.log(this.userId, this.username, this.gameCodeOnCreate);
+      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnCreate);
 
       localStorage.setItem('gameCode', this.gameCodeOnCreate);
       this.toastr.success('Game created successfully', "Success");
@@ -119,6 +118,7 @@ export class GamelobbyComponent {
   gameCodeOnJoinToCAPS: string = "";
 
   async joinGameByGameCode() {
+    const role = 'player';
     // First convert the gamecode to uppercase
     this.gameCodeOnJoinToCAPS = this.gameCodeOnJoin.toUpperCase();
 
@@ -144,11 +144,10 @@ export class GamelobbyComponent {
     else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeOnJoinToCAPS)) {
 
       await Promise.all([
-        this.userService.updateUserRoleAndGameCode(this.userId, 'player', this.gameCodeOnJoinToCAPS),
-
+        this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnJoinToCAPS)
       ]);
-      // pusher broadcast --> player joined the game
-      this.gamesService.joinGame(this.userId, this.username, this.gameCodeOnJoinToCAPS);
+      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnJoinToCAPS);
+
 
       localStorage.setItem('gameCode', this.gameCodeOnJoinToCAPS);
       this.toastr.success('Game joined successfully', "Success");

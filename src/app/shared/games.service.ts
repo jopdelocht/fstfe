@@ -58,18 +58,4 @@ export class GamesService {
     }
   }
 
-  joinGame(userId: any, username: any, room: any) {
-    this.http.patch('http://localhost:8000/api/joingame', {
-      userid: userId,
-      username: username,
-      room: room
-    }).subscribe();
-  }
-
-  leaveGame(userId: number, room: any) {
-    this.http.patch('http://localhost:8000/api/leavegame', {
-      userid: userId,
-      room: room
-    }).subscribe();
-  }
 }

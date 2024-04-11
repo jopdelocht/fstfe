@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import * as bcrypt from 'bcryptjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UserService {
-  constructor(private router: Router, private toastr: ToastrService) { }
+  constructor(private router: Router, private toastr: ToastrService, private http: HttpClient) { }
 
   // Put Users API Endpoint URL in constant
   userURL: string = 'http://localhost:8000/api/users';
-
-
 
 
   // User register method => Hashing on backend
@@ -67,13 +66,13 @@ export class UserService {
   }
 
   // Update player's role and gamecode -> used when player joins or creates game - GAMELOBBY
-  async updateUserRoleAndGameCode(userId: number, role: string, gameCode: string) {
+  async joinGameUpdateDatabase(userId: number, role: string, gameCode: string) {
     const token = localStorage.getItem('token');
     const item = {
       role: role,
       gamecode: gameCode
     }
-    const result = await fetch('http://localhost:8000/api/update-user-role-gamecode/' + userId, {
+    const result = await fetch('http://localhost:8000/api/joingameupdatedatabase/' + userId, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -89,11 +88,20 @@ export class UserService {
     return data;
   }
 
+  joinGameUpdatePusher(userId: any, userName: any, gameCode: any) {
+    this.http.patch('http://localhost:8000/api/joingameupdatepusher', {
+      userid: userId,
+      username: userName,
+      room: gameCode
+    }).subscribe();
+  }
+
+
   // Remove player's role and gamecode -> used when player leaves a game - GAMETABLE, LOGOUT
-  async removeUserRoleAndGameCode(userId: number) {
+  async leaveGameUpdateDatabase(userId: number) {
     const token = localStorage.getItem('token');
 
-    const result = await fetch('http://localhost:8000/api/remove-user-role-gamecode/' + userId, {
+    const result = await fetch('http://localhost:8000/api/leavegameupdatedatabase/' + userId, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -101,11 +109,19 @@ export class UserService {
         Authorization: 'Bearer ' + token
       }
     })
+
     if (!result.ok) {
       throw new Error('Network response was not ok');
     }
     const data = await result.json();
     return data;
+  }
+
+  leaveGameUpdatePusher(userId: number, gameCode: any) {
+    this.http.patch('http://localhost:8000/api/leavegameupdatepusher', {
+      userid: userId,
+      room: gameCode
+    }).subscribe();
   }
 
 

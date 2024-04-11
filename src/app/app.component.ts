@@ -37,10 +37,20 @@ export class AppComponent {
   }
 
   async logout() {
+    // Ensure the user's data is fully loaded
+    await this.userService.getUserById(this.userId).then(user => {
+      this.user = user;
+    });
+
+    // Now proceed with the logout process
+    await Promise.all([
+      this.userService.leaveGameUpdatePusher(this.userId, this.user.gamecode),
+      this.userService.leaveGameUpdateDatabase(this.userId)
+    ]);
+
     localStorage.removeItem('token');
     this.toastr.success('Logged out', 'Success');
-    setTimeout((this.redirectToHome), 2000);
-    await this.userService.removeUserRoleAndGameCode(this.userId);
+    setTimeout(this.redirectToHome, 1500);
   }
 
   async navigateToGame() {
@@ -49,19 +59,21 @@ export class AppComponent {
         this.user = await this.userService.getUserById(this.userId)
       ]);
       const gamecode = this.user.gamecode;
-      console.log('The users gamecode is: ' + gamecode);
       if (!gamecode) {
         this.router.navigate(['/gamelobby']);
       } else if (gamecode) {
         // when a user has a gamecode, patch the gamecode to NULL and navigate to gamelobby - Pusher
-        this.gamesService.leaveGame(this.userId, gamecode);
         // also remove gamecode and role from database
-        this.userService.removeUserRoleAndGameCode(this.userId);
+        this.userService.leaveGameUpdateDatabase(this.userId);
+        this.userService.leaveGameUpdatePusher(this.userId, this.user.gamecode);
         this.router.navigate(['/gamelobby']);
       }
     } else {
       this.router.navigate(['/login']);
     }
   }
+
+
+
 
 }
