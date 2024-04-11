@@ -197,6 +197,9 @@ export class GametableComponent {
     this.username = this.user.username;
 
     this.joinedPlayersArray = await this.userService.getUsersByGameCode(this.gameCode);
+    console.log('Dit is de joined players array on init, komende van de DB:');
+    console.log(this.joinedPlayersArray);
+
 
     // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
     const gameByGameCode = await this.gamesService.getGameByGamecode(this.gameCode);
@@ -221,9 +224,17 @@ export class GametableComponent {
     });
 
     let channel = pusher.subscribe(this.gameCode!);
+
     channel.bind('score', (data: any) => {
-      this.scores.push(data);
-      console.log(this.scores);
+      console.log('Dit is de data die binnenkomt vanuit de backend naar pusher, naar de frontend:');
+      console.log(data);
+      // Find the player with the corresponding ID and update their score
+      const playerIndex = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
+      if (playerIndex !== -1) {
+        this.joinedPlayersArray[playerIndex].score = data.score; // Update the score
+      }
+      console.log('PUSHER - Dit is de joined players array wanneer iemand gevote heeft:')
+      console.log(this.joinedPlayersArray);
     });
 
     channel.bind('task', (data: any) => {
@@ -232,7 +243,7 @@ export class GametableComponent {
 
     channel.bind('joinedgame', (data: any) => {
       this.joinedPlayersArray.push(data);
-      console.log('Hieronder een array van alle spelers die momenteel in het spel zitten:')
+      console.log('PUSHER - Dit is de joined players array wanneer iemand de game joined:')
       console.log(this.joinedPlayersArray);
     });
 
@@ -243,7 +254,7 @@ export class GametableComponent {
       if (index !== -1) {
         this.joinedPlayersArray.splice(index, 1);
       }
-      console.log('Hieronder een array van alle spelers die momenteel in het spel zitten:')
+      console.log('PUSHER - Dit is de joined players array wanneer iemand de game leaved:')
       console.log(this.joinedPlayersArray);
     });
 
@@ -256,27 +267,28 @@ export class GametableComponent {
   // GAMETABLE FUNCTIONALITY //
 
   // Changes the selected card state to true, changes all other cards state to false and stores value in myCard
-  onCardClick(card: any): void {
+  onCardClick(card: any) {
     this.setOfCards.forEach((c: any) => {
       c.state = false;
     });
     card.state = true;
     this.myCard = card.value;
-    //console.log("My card:", this.myCard);
+    return this.myCard;
   }
 
   toLobby() {
     this.router.navigate(['/gamelobby']);
   }
 
-  sendScore(): void {
-    this.http.post('http://localhost:8000/api/scores', {
-      userid: this.userId,
-      username: this.username,
-      score: this.myCard,
-      room: this.gameCode
-    }).subscribe();
+  voteScore() {
+    // console.log('Check of alle data juist binnenkomt:')
+    // console.log(this.userId, typeof this.userId);
+    // console.log(this.myCard, typeof this.myCard);
+    // console.log(this.gameCode, typeof this.gameCode);
+    this.userService.setScoreUpdateDatabase(this.userId, this.myCard);
+    this.userService.setScoreUpdatePusher(this.userId, this.myCard, this.gameCode);
   }
+
 
   sendTask(): void {
     this.http.post('http://localhost:8000/api/tasks', {
@@ -293,5 +305,14 @@ export class GametableComponent {
     this.userService.leaveGameUpdateDatabase(userid);
     this.userService.leaveGameUpdatePusher(userid, gameCode);
   }
+
+  // sendScore(): void {
+  //   this.http.post('http://localhost:8000/api/scores', {
+  //     userid: this.userId,
+  //     username: this.username,
+  //     score: this.myCard,
+  //     room: this.gameCode
+  //   }).subscribe();
+  // }
 
 }

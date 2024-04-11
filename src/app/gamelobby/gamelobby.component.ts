@@ -101,7 +101,7 @@ export class GamelobbyComponent {
         this.gamesService.createGame(this.gameNameOnCreate, this.selectedSet, this.gameCodeOnCreate),
         this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnCreate)
       ]);
-      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnCreate);
+      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnCreate, role);
 
       localStorage.setItem('gameCode', this.gameCodeOnCreate);
       this.toastr.success('Game created successfully', "Success");
@@ -146,7 +146,7 @@ export class GamelobbyComponent {
       await Promise.all([
         this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnJoinToCAPS)
       ]);
-      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnJoinToCAPS);
+      this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnJoinToCAPS, role);
 
 
       localStorage.setItem('gameCode', this.gameCodeOnJoinToCAPS);

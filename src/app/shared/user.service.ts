@@ -88,11 +88,12 @@ export class UserService {
     return data;
   }
 
-  joinGameUpdatePusher(userId: any, userName: any, gameCode: any) {
+  joinGameUpdatePusher(userId: any, userName: any, gameCode: any, role: any) {
     this.http.patch('http://localhost:8000/api/joingameupdatepusher', {
       userid: userId,
       username: userName,
-      room: gameCode
+      room: gameCode,
+      role: role
     }).subscribe();
   }
 
@@ -123,6 +124,38 @@ export class UserService {
       room: gameCode
     }).subscribe();
   }
+
+  // Update player's score inside the database
+  async setScoreUpdateDatabase(userId: number, score: number) {
+    const token = localStorage.getItem('token');
+    const item = {
+      score: score
+    }
+    const result = await fetch('http://localhost:8000/api/setscoreupdatedatabase/' + userId, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(item)
+    })
+    if (!result.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await result.json();
+    return data;
+  }
+
+  setScoreUpdatePusher(userId: any, score: number, gameCode: any) {
+    this.http.patch('http://localhost:8000/api/setscoreupdatepusher', {
+      userid: userId,
+      score: score,
+      room: gameCode
+    }).subscribe();
+  }
+
+
 
 
 
