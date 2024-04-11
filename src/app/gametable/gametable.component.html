@@ -45,7 +45,7 @@
                         <div class="card table">
                             <div class="card-body table">
                                 <i class="fa-regular fa-trash-can"
-                                    (click)="deletePlayer(player.userid, player.gamecode)"></i>
+                                    (click)="deletePlayer(player.userid, player.gamecode)" *ngIf="role === 'admin'"></i>
                                 <p class="card-text">{{player.username}}</p>
                             </div>
                         </div>
