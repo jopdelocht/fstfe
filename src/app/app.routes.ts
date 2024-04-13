@@ -5,8 +5,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { GamelobbyComponent } from './gamelobby/gamelobby.component';
 import { ChatexampleComponent } from './chatexample/chatexample.component';
-import { GametableadminComponent } from './gametableadmin/gametableadmin.component';
-import { GametableplayerComponent } from './gametableplayer/gametableplayer.component';
 import { GametableDeactiveGuardClassGuard } from './guards/gametable-deactive-guard-class.guard';
 
 // Auth guard and login component
@@ -37,16 +35,6 @@ export const routes: Routes = [
         component: GametableComponent,
         canActivate: [authGuard],
         canDeactivate: [GametableDeactiveGuardClassGuard]
-    },
-    {
-        path: 'gametableadmin',
-        component: GametableadminComponent,
-        canActivate: [authGuard],
-    },
-    {
-        path: 'gametableplayer',
-        component: GametableplayerComponent,
-        canActivate: [authGuard],
     },
     {
         path: 'gamelobby',

@@ -155,6 +155,31 @@ export class UserService {
     }).subscribe();
   }
 
+  async displayScoreUpdateDatabase(gameCode: string) {
+    const token = localStorage.getItem('token');
+    const result = await fetch('http://localhost:8000/api/displayscoreupdatedatabase/' + gameCode, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+        Authorization: 'Bearer ' + token
+      }
+    })
+    if (!result.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await result.json();
+    return data;
+  }
+
+  displayScoreUpdatePusher(gameCode: string) {
+    this.http.patch('http://localhost:8000/api/displayscoreupdatepusher', {
+      room: gameCode
+    }).subscribe();
+  }
+
+
+
 
 
 

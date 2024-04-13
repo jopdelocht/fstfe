@@ -19,8 +19,8 @@ export class GamesService {
   }
 
   //get game by gamecode
-  async getGameByGamecode(gamecode: any) {
-    const result = await fetch(this.gamesURL + gamecode);
+  async getGameByGamecode(gameCode: any) {
+    const result = await fetch(this.gamesURL + gameCode);
     const gameByGameCode = await result.json();
     //console.log(gameByGameCode);
     return gameByGameCode;

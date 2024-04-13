@@ -9,9 +9,6 @@ import { UserService } from '../shared/user.service';
 export class GametableDeactiveGuardClassGuard implements CanDeactivate<any> {
 
   constructor(private userService: UserService) { }
-  userId = parseInt(localStorage.getItem('userId') ?? '0', 10);
-  gameCode = localStorage.getItem('gameCode');
-
 
   canDeactivate(
     component: any,
@@ -19,11 +16,14 @@ export class GametableDeactiveGuardClassGuard implements CanDeactivate<any> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    let userId = parseInt(localStorage.getItem('userId') ?? '0', 10);
+    let gameCode = localStorage.getItem('gameCode');
+
     if (component) {
       const confirmation = confirm('Are you sure you want to leave this page?');
       if (confirmation) {
-        this.userService.leaveGameUpdateDatabase(this.userId);
-        this.userService.leaveGameUpdatePusher(this.userId, this.gameCode);
+        this.userService.leaveGameUpdateDatabase(userId);
+        this.userService.leaveGameUpdatePusher(userId, gameCode);
         localStorage.removeItem('gameCode');
         return true;
       } else {

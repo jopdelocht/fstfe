@@ -15,6 +15,7 @@ Navy Blue: #191825
 
 .container-left {
     min-width: 17rem;
+    max-width: 17rem;
     margin: 1rem;
 }
 
@@ -88,6 +89,8 @@ h3 {
     font-family: 'Assistant', sans-serif;
     margin-bottom: 0.5rem;
 }
+
+
 
 /* Scroll area for the task area */
 .scrollarea {
@@ -218,6 +221,21 @@ h3 {
     left: 10px;
     font-size: small;
     color: goldenrod;
+}
+
+.card-text.card-name {
+    font-family: 'Assistant', sans-serif;
+    position: absolute;
+    bottom: 10px;
+    /* center text */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card-text.card-number {
+    font-family: 'Assistant', sans-serif;
+    font-size: 3rem;
+    color: #E54758;
 }
 
 .bi {

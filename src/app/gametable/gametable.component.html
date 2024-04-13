@@ -47,17 +47,17 @@
                                 <i class="fa-regular fa-trash-can"
                                     (click)="deletePlayer(player.userid, player.gamecode)" *ngIf="role === 'admin'"></i>
                                 <i class="fa-solid fa-crown" *ngIf="player.role === 'admin'"></i>
-
-                                <!-- Display a unique symbol for each card -->
-                                <i *ngIf="i % 4 === 0" class="bi bi-suit-heart-fill"
+                                <i *ngIf="i % 4 === 0 && player.displayscore === 0 || player.displayscore === null"
+                                    class="bi bi-suit-heart-fill"
                                     [ngStyle]="{'color': player.score ? '#E54758' : 'rgb(226, 226, 226)'}"></i>
-                                <i *ngIf="i % 4 === 1" class="bi bi-suit-club-fill"
+                                <i *ngIf="i % 4 === 1 && player.displayscore === 0" class="bi bi-suit-club-fill"
                                     [ngStyle]="{'color': player.score ? '#191825' : 'rgb(226, 226, 226)'}"></i>
-                                <i *ngIf="i % 4 === 2" class="bi bi-suit-spade-fill"
-                                    [ngStyle]="{'color': player.score ? '#191825' : 'rgb(226, 226, 226)'}"></i>
-                                <i *ngIf="i % 4 === 3" class="bi bi-suit-diamond-fill"
+                                <i *ngIf="i % 4 === 2 && player.displayscore === 0" class="bi bi-suit-diamond-fill"
                                     [ngStyle]="{'color': player.score ? '#E54758' : 'rgb(226, 226, 226)'}"></i>
-                                <p class="card-text mt-2">{{player.username}}</p>
+                                <i *ngIf="i % 4 === 3 && player.displayscore === 0" class="bi bi-suit-spade-fill"
+                                    [ngStyle]="{'color': player.score ? '#191825' : 'rgb(226, 226, 226)'}"></i>
+                                <p class="card-text card-number" *ngIf="player.displayscore === 1">{{player.score}}</p>
+                                <p class="card-text card-name">{{player.username}}</p>
                             </div>
                         </div>
                     </div>
@@ -81,6 +81,8 @@
                 </div>
             </div>
             <div class="inner-bottom-right">
+                <button *ngIf="role === 'admin'" class="btn btn-secondary mt-2" (click)="revealCards()">Reveal
+                    cards</button>
             </div>
         </div>
     </div>

@@ -197,8 +197,6 @@ export class GametableComponent {
     this.username = this.user.username;
 
     this.joinedPlayersArray = await this.userService.getUsersByGameCode(this.gameCode);
-    console.log('Dit is de joined players array on init, komende van de DB:');
-    console.log(this.joinedPlayersArray);
 
 
     // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
@@ -214,6 +212,10 @@ export class GametableComponent {
       this.setOfCards = this.fibonacciCards;
     }
 
+    for (let card of this.regularCards && this.fibonacciCards) {
+      card.state = false;
+    }
+
 
     // PUSHER BROADCASTING //
     // Enable pusher logging - don't include this in production
@@ -225,22 +227,6 @@ export class GametableComponent {
 
     let channel = pusher.subscribe(this.gameCode!);
 
-    channel.bind('score', (data: any) => {
-      console.log('Dit is de data die binnenkomt vanuit de backend naar pusher, naar de frontend:');
-      console.log(data);
-      // Find the player with the corresponding ID and update their score
-      const playerIndex = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
-      if (playerIndex !== -1) {
-        this.joinedPlayersArray[playerIndex].score = data.score; // Update the score
-      }
-      console.log('PUSHER - Dit is de joined players array wanneer iemand gevote heeft:')
-      console.log(this.joinedPlayersArray);
-    });
-
-    channel.bind('task', (data: any) => {
-      this.tasks.push(data);
-    });
-
     channel.bind('joinedgame', (data: any) => {
       this.joinedPlayersArray.push(data);
       console.log('PUSHER - Dit is de joined players array wanneer iemand de game joined:')
@@ -248,7 +234,6 @@ export class GametableComponent {
     });
 
     channel.bind('leftgame', (data: any) => {
-      console.log(data);
       // Find and remove the user from the array of joined players
       const index = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
       if (index !== -1) {
@@ -258,9 +243,33 @@ export class GametableComponent {
       console.log(this.joinedPlayersArray);
     });
 
-    for (let card of this.regularCards && this.fibonacciCards) {
-      card.state = false;
-    }
+    channel.bind('score', (data: any) => {
+      // Find the player with the corresponding ID and update their score
+      const playerIndex = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
+      if (playerIndex !== -1) {
+        this.joinedPlayersArray[playerIndex].score = data.score; // Update the score
+      }
+      console.log('PUSHER - Dit is de joined players array wanneer iemand gevote heeft:')
+      console.log(this.joinedPlayersArray);
+    });
+
+    channel.bind('displayscore', (data: any) => {
+      console.log(data);
+
+      this.joinedPlayersArray.forEach((player: any) => {
+        // Check if the gamecode matches the room from the Pusher data, and whether or not the player has voted
+        if (player.gamecode === data.room && player.score !== null) {
+          // Update the displayscore to 1
+          player.displayscore = 1;
+        }
+      });
+      console.log('PUSHER - Updated joined players array, na de displayscore:', this.joinedPlayersArray);
+    });
+
+    channel.bind('task', (data: any) => {
+      this.tasks.push(data);
+    });
+
   }
 
 
@@ -306,13 +315,20 @@ export class GametableComponent {
     this.userService.leaveGameUpdatePusher(userid, gameCode);
   }
 
-  // sendScore(): void {
-  //   this.http.post('http://localhost:8000/api/scores', {
-  //     userid: this.userId,
-  //     username: this.username,
-  //     score: this.myCard,
-  //     room: this.gameCode
-  //   }).subscribe();
-  // }
 
+  revealCards() {
+    this.userService.displayScoreUpdateDatabase(this.gameCode);
+    this.userService.displayScoreUpdatePusher(this.gameCode);
+  }
 }
+
+// sendScore(): void {
+//   this.http.post('http://localhost:8000/api/scores', {
+//     userid: this.userId,
+//     username: this.username,
+//     score: this.myCard,
+//     room: this.gameCode
+//   }).subscribe();
+// }
+
+

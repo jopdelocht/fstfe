@@ -99,7 +99,7 @@ export class GamelobbyComponent {
 
       await Promise.all([
         this.gamesService.createGame(this.gameNameOnCreate, this.selectedSet, this.gameCodeOnCreate),
-        this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnCreate)
+        this.userService.joinGameUpdateDatabase(this.userId, role, this.gameCodeOnCreate),
       ]);
       this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnCreate, role);
 
@@ -140,7 +140,7 @@ export class GamelobbyComponent {
       return;
     }
 
-    // sets role and gamecode in localstorage, navigates to gametable player with, after checking if gamecode is valid
+    // navigates to gametable after checking if gamecode is valid
     else if (this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeOnJoinToCAPS)) {
 
       await Promise.all([

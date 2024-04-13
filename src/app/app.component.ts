@@ -47,8 +47,9 @@ export class AppComponent {
       this.userService.leaveGameUpdatePusher(this.userId, this.user.gamecode),
       this.userService.leaveGameUpdateDatabase(this.userId)
     ]);
-
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('gameCode');
     this.toastr.success('Logged out', 'Success');
     setTimeout(this.redirectToHome, 1500);
   }
