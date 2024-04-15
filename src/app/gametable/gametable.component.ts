@@ -8,6 +8,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import Pusher from 'pusher-js';
 import { GamesService } from '../shared/games.service';
 import { UserService } from '../shared/user.service';
+import { TasksService } from '../shared/tasks.service';
 
 @Component({
   selector: 'app-gametable',
@@ -24,7 +25,8 @@ export class GametableComponent {
     private route: ActivatedRoute,
     private http: HttpClient,
     private gamesService: GamesService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private tasksService: TasksService) { }
 
   user: any;
   joinedPlayersArray: any[] = [];
@@ -37,13 +39,14 @@ export class GametableComponent {
   scores: any[] = [];
   score: string = '';
 
-  tasks: any[] = [];
-  task: string = '';
-
   myCards: any;
   selectedCard: any; // Keep track of the selected card
 
   setOfCards: any[] = [];
+
+  tasks: any[] = [];
+  taskTitle: string = "";
+  taskDescription: string = "";
 
 
   // Cardvalues for testgame
@@ -197,6 +200,7 @@ export class GametableComponent {
     this.username = this.user.username;
 
     this.joinedPlayersArray = await this.userService.getUsersByGameCode(this.gameCode);
+    this.tasks = await this.tasksService.getTasksByGameCode(this.gameCode);
 
 
     // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
@@ -257,8 +261,8 @@ export class GametableComponent {
       console.log(data);
 
       this.joinedPlayersArray.forEach((player: any) => {
-        // Check if the gamecode matches the room from the Pusher data, and whether or not the player has voted
-        if (player.gamecode === data.room && player.score !== null) {
+        // Check if the gamecode matches the gamecode from the Pusher data, and whether or not the player has voted
+        if (player.gamecode === data.gamecode && player.score !== null) {
           // Update the displayscore to 1
           player.displayscore = 1;
         }
@@ -266,10 +270,27 @@ export class GametableComponent {
       console.log('PUSHER - Updated joined players array, na de displayscore:', this.joinedPlayersArray);
     });
 
-    channel.bind('task', (data: any) => {
+    channel.bind('createtask', (data: any) => {
       this.tasks.push(data);
+      console.log('PUSHER - Updated tasks array, na de createtask:');
+      console.log(this.tasks);
     });
 
+    channel.bind('setscoretotask', (data: any) => {
+      // Find the index of the task with matching taskid
+      const index = this.tasks.findIndex(task => task.taskid === data.taskid);
+
+      // If the task with matching taskid exists, update its properties
+      if (index !== -1) {
+        this.tasks[index].averagescore = data.averagescore;
+        this.tasks[index].lowestscore = data.lowestscore;
+        this.tasks[index].highestscore = data.highestscore;
+      } else {
+        return
+      }
+
+      console.log(this.tasks);
+    });
   }
 
 
@@ -290,20 +311,8 @@ export class GametableComponent {
   }
 
   voteScore() {
-    // console.log('Check of alle data juist binnenkomt:')
-    // console.log(this.userId, typeof this.userId);
-    // console.log(this.myCard, typeof this.myCard);
-    // console.log(this.gameCode, typeof this.gameCode);
     this.userService.setScoreUpdateDatabase(this.userId, this.myCard);
     this.userService.setScoreUpdatePusher(this.userId, this.myCard, this.gameCode);
-  }
-
-
-  sendTask(): void {
-    this.http.post('http://localhost:8000/api/tasks', {
-      task: this.task,
-      room: this.gameCode
-    }).subscribe(() => this.task = '');
   }
 
   trackById(item: any): number {
@@ -315,20 +324,50 @@ export class GametableComponent {
     this.userService.leaveGameUpdatePusher(userid, gameCode);
   }
 
-
-  revealCards() {
+  averageScore: number | null | undefined;
+  lowestScore: number | null | undefined;
+  highestScore: number | null | undefined;
+  async revealCards() {
+    // Patch displayscore from 0 to 1, therefore revealing cards
     this.userService.displayScoreUpdateDatabase(this.gameCode);
     this.userService.displayScoreUpdatePusher(this.gameCode);
+
+    // Calculate average score, lowest score, and highest score
+    this.averageScore = Math.round(
+      this.joinedPlayersArray
+        .map((player) => player.score)
+        .reduce((total, score) => total + score, 0)
+      / this.joinedPlayersArray.length
+    );
+    this.lowestScore = Math.min(...this.joinedPlayersArray.map((player) => player.score));
+    this.highestScore = Math.max(...this.joinedPlayersArray.map((player) => player.score));
+
+    // Find the task with the highest ID (therefore the most recent task)
+    const mostRecentTask = await this.tasks.reduce((prev, current) => {
+      return (prev.id > current.id) ? prev : current;
+    });
+
+    // Ensuring mostRecentTask is not undefined before proceeding
+    if (mostRecentTask) {
+      const taskId = mostRecentTask.taskid;
+      await this.tasksService.setTaskScoreUpdateDatabase(taskId, this.averageScore, this.lowestScore, this.highestScore);
+      this.tasksService.setTaskScoreUpdatePusher(taskId, this.averageScore, this.lowestScore, this.highestScore, this.gameCode);
+    } else {
+      console.log('No recent task found.');
+    }
   }
+
+  async createTask() {
+    const taskData = await this.tasksService.createTaskDB(this.taskTitle, this.taskDescription, this.gameCode);
+    // Assuming createTaskDB now returns the task ID
+    const taskId = taskData.taskId;
+    this.tasksService.createTaskPusher(this.taskTitle, this.taskDescription, this.gameCode, taskId);
+    // Clear the fields
+    this.taskTitle = '';
+    this.taskDescription = '';
+  }
+
 }
 
-// sendScore(): void {
-//   this.http.post('http://localhost:8000/api/scores', {
-//     userid: this.userId,
-//     username: this.username,
-//     score: this.myCard,
-//     room: this.gameCode
-//   }).subscribe();
-// }
 
 

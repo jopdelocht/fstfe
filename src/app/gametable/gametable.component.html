@@ -7,12 +7,13 @@
                 Your cardset: <strong>{{setOfCardName}}</strong><br>
                 Your gamecode: <strong>{{gameCode}}</strong>
                 <div class="d-flex">
-                    <button class="btn btn-secondary mt-2" type="submit" (click)="toLobby()">To lobby</button>
+                    <i class="fa-solid fa-circle-left back-arrow title" title="Go back to the lobby"
+                        (click)="toLobby()"></i>
                 </div>
             </div>
         </div>
         <div class="card">
-            <div class="container bg-body-tertiary">
+            <div class="container bg-body-tertiary taskdisplay">
                 <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
                     <div
                         class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
@@ -22,18 +23,25 @@
                     <div class="list-group list-group-flush border-bottom scrollarea scorecontainer">
                         <!-- display results in reverse -->
                         <div class="list-group-item list-group-item-action py-3 lh-sm"
-                            *ngFor="let tsk of tasks.reverse(); let i = index; first as isFirst"
+                            *ngFor="let task of tasks.reverse(); let i = index; first as isFirst"
                             [class.first-item]="isFirst">
-                            <div class="col-10 mb-1 small">{{tsk.task}}</div>
+                            <div class="col-10 mb-1 small">
+                                <strong>{{task.tasktitle}}</strong><br>{{task.taskdescription}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="gamechatcontainer" *ngIf="role === 'admin'">
-            <form (submit)="sendTask()">
-                <input class="form-control " [(ngModel)]="task" [ngModelOptions]="{standalone: true}">
-            </form>
+        <div class="taskinputcontainer" *ngIf="role === 'admin'">
+            <div class="input-button-container">
+                <input class="form-control mb-2" type="text" placeholder="Task title" [(ngModel)]="taskTitle"
+                    [ngModelOptions]="{standalone: true}">
+                <button class="btn btn-secondary mb-2" type="submit" title="Create task" (click)="createTask()"><i
+                        class="fa-solid fa-paper-plane"></i></button>
+            </div>
+            <input class="form-control" type="text" placeholder="Task description" [(ngModel)]="taskDescription"
+                [ngModelOptions]="{standalone: true}">
         </div>
     </div>
     <div class="container-right">

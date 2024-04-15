@@ -92,7 +92,7 @@ export class UserService {
     this.http.patch('http://localhost:8000/api/joingameupdatepusher', {
       userid: userId,
       username: userName,
-      room: gameCode,
+      gamecode: gameCode,
       role: role
     }).subscribe();
   }
@@ -121,7 +121,7 @@ export class UserService {
   leaveGameUpdatePusher(userId: number, gameCode: any) {
     this.http.patch('http://localhost:8000/api/leavegameupdatepusher', {
       userid: userId,
-      room: gameCode
+      gamecode: gameCode
     }).subscribe();
   }
 
@@ -151,7 +151,7 @@ export class UserService {
     this.http.patch('http://localhost:8000/api/setscoreupdatepusher', {
       userid: userId,
       score: score,
-      room: gameCode
+      gamecode: gameCode
     }).subscribe();
   }
 
@@ -174,13 +174,9 @@ export class UserService {
 
   displayScoreUpdatePusher(gameCode: string) {
     this.http.patch('http://localhost:8000/api/displayscoreupdatepusher', {
-      room: gameCode
+      gamecode: gameCode
     }).subscribe();
   }
-
-
-
-
 
 
 
