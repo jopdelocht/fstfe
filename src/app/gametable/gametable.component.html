@@ -26,7 +26,10 @@
                             *ngFor="let task of tasks.reverse(); let i = index; first as isFirst"
                             [class.first-item]="isFirst">
                             <div class="col-10 mb-1 small">
-                                <strong>{{task.tasktitle}}</strong><br>{{task.taskdescription}}
+                                <strong>{{task.tasktitle}}</strong>
+                                <span [ngClass]="isFirst ? 'averagescoresmallfirst' : 'averagescoresmalllist'"
+                                    *ngIf="task.averagescore !== null">Average:
+                                    {{task.averagescore}}</span><br>{{task.taskdescription}}
                             </div>
                         </div>
                     </div>
@@ -89,8 +92,24 @@
                 </div>
             </div>
             <div class="inner-bottom-right">
+                <h3>Results <i class="fa-solid fa-arrow-rotate-left" (click)="resetScore()"></i></h3>
                 <button *ngIf="role === 'admin'" class="btn btn-secondary mt-2" (click)="revealCards()">Reveal
                     cards</button>
+
+                <!-- <div *ngFor="let task of tasks.reverse(); let i = index">
+                    <div>
+                        Lowest score: {{task.lowestscore}}<br>
+                        Average score: {{task.averagescore}}<br>
+                        Highest score: {{task.highestscore}}
+                    </div>
+                </div> -->
+                <div *ngFor="let task of tasks.reverse(); let i = index">
+                    <div>
+                        Lowest score: 5<br>
+                        Average score: 8<br>
+                        Highest score: 10
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -270,6 +270,21 @@ export class GametableComponent {
       console.log('PUSHER - Updated joined players array, na de displayscore:', this.joinedPlayersArray);
     });
 
+
+    channel.bind('resetscore', (data: any) => {
+      console.log(data);
+      this.joinedPlayersArray.forEach((player: any) => {
+        if (player.gamecode === data.gamecode) {
+          player.displayscore = 0;
+          player.score = null;
+        }
+      });
+      console.log('PUSHER - Updated joined players array, na de resetscore:', this.joinedPlayersArray);
+      this.toastr.success('Scores have been reset', 'Reset');
+
+    });
+
+
     channel.bind('createtask', (data: any) => {
       this.tasks.push(data);
       console.log('PUSHER - Updated tasks array, na de createtask:');
@@ -365,6 +380,11 @@ export class GametableComponent {
     // Clear the fields
     this.taskTitle = '';
     this.taskDescription = '';
+  }
+
+  resetScore() {
+    this.userService.resetScoreUpdateDatabase(this.gameCode);
+    this.userService.resetScoreUpdatePusher(this.gameCode);
   }
 
 }

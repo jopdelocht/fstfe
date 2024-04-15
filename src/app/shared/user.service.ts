@@ -179,6 +179,30 @@ export class UserService {
   }
 
 
+  async resetScoreUpdateDatabase(gameCode: string) {
+    const token = localStorage.getItem('token');
+    const result = await fetch('http://localhost:8000/api/resetscoreupdatedatabase/' + gameCode, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+        Authorization: 'Bearer ' + token
+      }
+    })
+    if (!result.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await result.json();
+    return data;
+  }
+
+  resetScoreUpdatePusher(gameCode: string) {
+    this.http.patch('http://localhost:8000/api/resetscoreupdatpusher', {
+      gamecode: gameCode
+    }).subscribe();
+  }
+
+
 
   // Login method to return token
   async login(username: string, password: string) {

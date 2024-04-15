@@ -159,6 +159,21 @@ h3 {
     color: #191825
 }
 
+.averagescoresmallfirst {
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #191825;
+    font-size: smaller;
+
+}
+
+.averagescoresmalllist {
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #aeaeae;
+    font-size: smaller;
+}
+
 
 /* TABLE CARDS */
 .table {
@@ -260,4 +275,10 @@ h3 {
 .bi {
     font-size: 3rem;
     color: rgb(226, 226, 226);
+}
+
+.fa-arrow-rotate-left {
+    cursor: pointer;
+    color: #E54758;
+    font-size: 1.5rem;
 }
