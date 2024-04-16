@@ -51,6 +51,7 @@ Navy Blue: #191825
     width: 20rem;
     height: 16rem;
     margin: 0.5rem;
+    padding-left: 1rem;
 }
 
 /* Basic styling */
@@ -62,6 +63,7 @@ h3 {
     font-family: 'Assistant', sans-serif;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: #191825;
 }
 
 /* BUTTONS */
@@ -88,9 +90,13 @@ h3 {
 .card.user-details {
     font-family: 'Assistant', sans-serif;
     margin-bottom: 0.5rem;
+    color: #191825;
 }
 
-
+.taskdisplay {
+    padding-left: 0;
+    padding-right: 0;
+}
 
 /* Scroll area for the task area */
 .scrollarea {
@@ -102,6 +108,8 @@ h3 {
 /* Title of the taskarea */
 .titletask.fs-5 {
     font-family: 'Assistant', sans-serif;
+    color: #191825;
+    font-weight: 700;
 }
 
 .input-button-container {
@@ -151,6 +159,7 @@ h3 {
     --bs-list-group-active-border-color: #F8F9FA;
     font-family: 'Assistant', sans-serif;
     font-weight: 400;
+    letter-spacing: 0.1pt;
 }
 
 /* Colour of the first item in the tasks array */
@@ -280,5 +289,59 @@ h3 {
 .fa-arrow-rotate-left {
     cursor: pointer;
     color: #E54758;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-top: 0.4rem;
+}
+
+.fa-arrow-rotate-left:hover {
+    color: #d03847;
+}
+
+.fa-solid.fa-eye:hover {
+    color: #d03847;
+}
+
+
+.fa-solid.fa-eye {
+    cursor: pointer;
+    color: #E54758;
+    font-size: 1.3rem;
+    margin-top: 0.4rem;
+    margin-right: 1rem;
+}
+
+.ibr-title-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ibr-content {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.ibr-scores {
+    margin-top: 3rem;
+}
+
+/* 
+Pure white: #FFFFFF
+Deep Cynober: #E54758
+Deep Cynober (hover): #d03847
+Sky Blue: #6BC7F0
+Navy Blue: #191825
+*/
+
+h4 {
+    font-family: 'Assistant', sans-serif;
+    font-weight: 900;
+    color: #E54758;
+}
+
+h5 {
+    font-family: 'Assistant', sans-serif;
+    color: #191825;
 }

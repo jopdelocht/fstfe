@@ -1,5 +1,4 @@
 import { Component, HostListener } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -10,23 +9,36 @@ import { GamesService } from '../shared/games.service';
 import { UserService } from '../shared/user.service';
 import { TasksService } from '../shared/tasks.service';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 @Component({
   selector: 'app-gametable',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './gametable.component.html',
   styleUrls: ['./gametable.component.css']
 })
 export class GametableComponent {
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   constructor(
-    private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
     private gamesService: GamesService,
     private userService: UserService,
-    private tasksService: TasksService) { }
+    private tasksService: TasksService,
+
+    private _snackBar: MatSnackBar) { }
 
   user: any;
   joinedPlayersArray: any[] = [];
@@ -47,10 +59,12 @@ export class GametableComponent {
   tasks: any[] = [];
   taskTitle: string = "";
   taskDescription: string = "";
+  reversedTasks: any[] = [];
+
 
 
   // Cardvalues for testgame
-  myCard: number = 0;
+  myCard: number | null | undefined;
   cardBot1: number = 0;
   cardBot2: number = 0;
   objectBot1: any;
@@ -201,6 +215,7 @@ export class GametableComponent {
 
     this.joinedPlayersArray = await this.userService.getUsersByGameCode(this.gameCode);
     this.tasks = await this.tasksService.getTasksByGameCode(this.gameCode);
+    this.reversedTasks = [...this.tasks].reverse();
 
 
     // Retrieving SoC-name and SoC-id from freshly created game, by gamecode (id)
@@ -233,6 +248,11 @@ export class GametableComponent {
 
     channel.bind('joinedgame', (data: any) => {
       this.joinedPlayersArray.push(data);
+      this._snackBar.open('Player has joined the game', 'Hi', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       console.log('PUSHER - Dit is de joined players array wanneer iemand de game joined:')
       console.log(this.joinedPlayersArray);
     });
@@ -242,7 +262,13 @@ export class GametableComponent {
       const index = this.joinedPlayersArray.findIndex((player: any) => player.userid === data.userid);
       if (index !== -1) {
         this.joinedPlayersArray.splice(index, 1);
+        this._snackBar.open('Player has left the game', 'Bye', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 3000
+        });
       }
+
       console.log('PUSHER - Dit is de joined players array wanneer iemand de game leaved:')
       console.log(this.joinedPlayersArray);
     });
@@ -258,8 +284,6 @@ export class GametableComponent {
     });
 
     channel.bind('displayscore', (data: any) => {
-      console.log(data);
-
       this.joinedPlayersArray.forEach((player: any) => {
         // Check if the gamecode matches the gamecode from the Pusher data, and whether or not the player has voted
         if (player.gamecode === data.gamecode && player.score !== null) {
@@ -267,26 +291,74 @@ export class GametableComponent {
           player.displayscore = 1;
         }
       });
+      this.tasks.forEach((task: any) => {
+        if (task.gamecode === data.gamecode) {
+          task.displayscore = 1;
+        }
+      });
       console.log('PUSHER - Updated joined players array, na de displayscore:', this.joinedPlayersArray);
+      console.log('PUSHER - Updated tasks array, na de displayscore:', this.tasks);
     });
 
 
     channel.bind('resetscore', (data: any) => {
-      console.log(data);
       this.joinedPlayersArray.forEach((player: any) => {
         if (player.gamecode === data.gamecode) {
           player.displayscore = 0;
           player.score = null;
         }
       });
+      this.tasks.forEach((task: any) => {
+        if (task.gamecode === data.gamecode) {
+          task.displayscore = 0;
+        }
+      })
+      // Reset the state of the selected card
+      this.setOfCards.forEach((card: any) => {
+        if (card.state) {
+          card.state = false;
+        }
+      });
+      this.myCard = null;
       console.log('PUSHER - Updated joined players array, na de resetscore:', this.joinedPlayersArray);
-      this.toastr.success('Scores have been reset', 'Reset');
+      this._snackBar.open('Scores have been reset', 'Success', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
 
     });
 
 
     channel.bind('createtask', (data: any) => {
+      // pushes the task into the tasks array
       this.tasks.push(data);
+      this.reversedTasks = [...this.tasks].reverse();
+      // resets the scores of all players, by gamecode, to 0 or null
+      this.joinedPlayersArray.forEach((player: any) => {
+        if (player.gamecode === data.gamecode) {
+          player.displayscore = 0;
+          player.score = null;
+        }
+      });
+      // resets all scores of all tasks, by gamecode, to 0
+      this.reversedTasks.forEach((task: any) => {
+        if (task.gamecode === data.gamecode) {
+          task.displayscore = 0;
+        }
+      })
+      // Reset the state of the selected card
+      this.setOfCards.forEach((card: any) => {
+        if (card.state) {
+          card.state = false;
+        }
+      });
+      this.myCard = null;
+      this._snackBar.open('A new task has been created', 'Vote', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       console.log('PUSHER - Updated tasks array, na de createtask:');
       console.log(this.tasks);
     });
@@ -325,9 +397,25 @@ export class GametableComponent {
     this.router.navigate(['/gamelobby']);
   }
 
-  voteScore() {
-    this.userService.setScoreUpdateDatabase(this.userId, this.myCard);
-    this.userService.setScoreUpdatePusher(this.userId, this.myCard, this.gameCode);
+  submitScore() {
+    if (!this.myCard) {
+      this._snackBar.open('Please select a card', 'Error!', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
+      return;
+    } else if (this.myCard === null) {
+      this._snackBar.open('Please select a card', 'Error!', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
+      return;
+    } else if (this.myCard !== null && this.myCard !== undefined) {
+      this.userService.setScoreUpdateDatabase(this.userId, this.myCard);
+      this.userService.setScoreUpdatePusher(this.userId, this.myCard, this.gameCode);
+    }
   }
 
   trackById(item: any): number {
@@ -373,19 +461,28 @@ export class GametableComponent {
   }
 
   async createTask() {
-    const taskData = await this.tasksService.createTaskDB(this.taskTitle, this.taskDescription, this.gameCode);
-    // Assuming createTaskDB now returns the task ID
-    const taskId = taskData.taskId;
-    this.tasksService.createTaskPusher(this.taskTitle, this.taskDescription, this.gameCode, taskId);
-    // Clear the fields
-    this.taskTitle = '';
-    this.taskDescription = '';
+    if (!this.taskTitle || !this.taskDescription) {
+      this._snackBar.open('Please fill in all fields', 'Error', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
+    } else if (this.taskTitle && this.taskDescription) {
+      const taskData = await this.tasksService.createTaskDB(this.taskTitle, this.taskDescription, this.gameCode);
+      // Assuming createTaskDB now returns the task ID
+      const taskId = taskData.taskId;
+      this.tasksService.createTaskPusher(this.taskTitle, this.taskDescription, this.gameCode, taskId);
+      // Clear the fields
+      this.taskTitle = '';
+      this.taskDescription = '';
+    }
   }
 
   resetScore() {
     this.userService.resetScoreUpdateDatabase(this.gameCode);
     this.userService.resetScoreUpdatePusher(this.gameCode);
   }
+
 
 }
 

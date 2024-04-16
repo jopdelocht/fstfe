@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
-  constructor(private router: Router, private toastr: ToastrService, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   tasksURL: string = 'http://localhost:8000/api/';
 
@@ -85,8 +85,6 @@ export class TasksService {
 
   // Update tasks score (pusher)
   setTaskScoreUpdatePusher(taskId: number, averageScore: number, lowestScore: number, highestScore: number, gameCode: string) {
-    console.log('In de taskservice in setTaskScoreUpdatePusher');
-    console.log(taskId, averageScore, lowestScore, highestScore, gameCode);
     this.http.patch('http://localhost:8000/api/settaskscoreupdatepusher', {
       taskid: taskId,
       averagescore: averageScore,

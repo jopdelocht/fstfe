@@ -18,11 +18,18 @@ Navy Blue: #191825
     background-color: #FFFFFF;
 }
 
-.body {
-    font-family: 'Assistant', sans-serif;
-}
 
 ::selection {
     color: white;
     background: #6BC7F0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Assistant', sans-serif;
 }

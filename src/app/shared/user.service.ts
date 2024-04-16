@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,13 +35,13 @@ export class UserService {
         body: JSON.stringify(user)
       });
       // confirm user created
-      this.toastr.success('Registered successfully', 'Success', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
+      this.toastr.success('Registered successfully', 'Success', { positionClass: 'toast-bottom-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
       // call method to go to login
       this.goToLogin();
       return result.json();
     } else {
       // error if user or email already exists
-      this.toastr.error('Username and/or email already exists', 'Error', { positionClass: 'toast-top-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
+      this.toastr.error('Username and/or email already exists', 'Error', { positionClass: 'toast-bottom-right', progressBar: true, progressAnimation: 'decreasing', timeOut: 3000 });
     }
   }
 
@@ -126,7 +127,7 @@ export class UserService {
   }
 
   // Update player's score inside the database
-  async setScoreUpdateDatabase(userId: number, score: number) {
+  async setScoreUpdateDatabase(userId: number, score: number | null | undefined) {
     const token = localStorage.getItem('token');
     const item = {
       score: score
@@ -147,7 +148,7 @@ export class UserService {
     return data;
   }
 
-  setScoreUpdatePusher(userId: any, score: number, gameCode: any) {
+  setScoreUpdatePusher(userId: any, score: number | null | undefined, gameCode: any) {
     this.http.patch('http://localhost:8000/api/setscoreupdatepusher', {
       userid: userId,
       score: score,
@@ -226,4 +227,11 @@ export class UserService {
   goToHome(): void {
     this.router.navigateByUrl('/home');
   }
+
+  // async isAdmin(userId: number): Promise<boolean> {
+  //   const users = await this.getUsers();
+  //   const user = users.find((user: { id: number; }) => user.id === userId);
+  //   return user && user.role === 'admin';
+  //  }
+
 }

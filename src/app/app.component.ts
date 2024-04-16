@@ -3,13 +3,22 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { UserService } from './shared/user.service';
-import { ToastrService } from 'ngx-toastr';
 import { GamesService } from './shared/games.service';
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, MatFormFieldModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,7 +27,13 @@ export class AppComponent {
   username: string | null | undefined;
   userId: any;
   user: any;
-  constructor(private toastr: ToastrService, private router: Router, private userService: UserService, private gamesService: GamesService) {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private gamesService: GamesService,
+    private _snackBar: MatSnackBar) {
   }
 
   async ngOnInit() {
@@ -50,7 +65,11 @@ export class AppComponent {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('gameCode');
-    this.toastr.success('Logged out', 'Success');
+    this._snackBar.open('Logged out', 'Success', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 3000
+    });
     setTimeout(this.redirectToHome, 1500);
   }
 

@@ -2,26 +2,37 @@ import { Component } from '@angular/core';
 import { CardService } from '../shared/card.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { GamesService } from '../shared/games.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../shared/user.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-gamelobby',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './gamelobby.component.html',
   styleUrl: './gamelobby.component.css'
 })
 export class GamelobbyComponent {
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   constructor(
     private userService: UserService,
     public cardService: CardService,
     private router: Router,
-    private toastr: ToastrService,
     private gamesService: GamesService,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private _snackBar: MatSnackBar) { }
 
   gamesURL = this.gamesService.gamesURL;
   gamesArray: any[] = [];
@@ -70,7 +81,11 @@ export class GamelobbyComponent {
   async createGame() {
     const role = 'admin';
     if (!this.gameNameOnCreate || this.myCardSetOnCreate === "default") {
-      this.toastr.error('Please fill in all fields', 'Error');
+      this._snackBar.open('Please fill in all fields', 'Error', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       return;
     } else if (this.gameNameOnCreate && this.myCardSetOnCreate) {
       // First refresh the array before checking for a duplicate
@@ -104,7 +119,11 @@ export class GamelobbyComponent {
       this.userService.joinGameUpdatePusher(this.userId, this.userName, this.gameCodeOnCreate, role);
 
       localStorage.setItem('gameCode', this.gameCodeOnCreate);
-      this.toastr.success('Game created successfully', "Success");
+      this._snackBar.open('Game created successfully', 'Success', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       this.router.navigate(['/gametable']);
     }
   }
@@ -124,11 +143,19 @@ export class GamelobbyComponent {
 
     // throw error if not filled in completely
     if (!this.gameCodeOnJoinToCAPS) {
-      this.toastr.error('Please fill in all fields', 'Error');
+      this._snackBar.open('Please fill in all fields', 'Error', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       return;
       // throw error if not filled in correctly, string must be 6 characters long
     } else if (this.gameCodeOnJoinToCAPS.length !== 6) {
-      this.toastr.error('The number of characters must be 6', 'Error');
+      this._snackBar.open('The number of characters must be 6', 'Error', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       return;
     }
 
@@ -136,7 +163,11 @@ export class GamelobbyComponent {
     await this.fetchGames();
     // throw error after checking if gamecode is valid
     if (!this.gamesArray.some((game: { gamecode: string; }) => game.gamecode === this.gameCodeOnJoinToCAPS)) {
-      this.toastr.error('Provided gamecode is not valid', 'Error');
+      this._snackBar.open('Provided gamecode is not valid', 'Error', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       return;
     }
 
@@ -150,7 +181,11 @@ export class GamelobbyComponent {
 
 
       localStorage.setItem('gameCode', this.gameCodeOnJoinToCAPS);
-      this.toastr.success('Game joined successfully', "Success");
+      this._snackBar.open('Game joined successfully', 'Success', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 3000
+      });
       this.router.navigate(['/gametable']);
     }
   }
