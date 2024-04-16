@@ -72,6 +72,7 @@ export class GametableComponent {
 
   setOfCardName: string = "";
   setOfCardID: number = 0;
+  gameName: string = "";
 
   // FIXED ARRAY OF CARDS //
   regularCards = [
@@ -223,6 +224,7 @@ export class GametableComponent {
     // Fill in variable values
     this.setOfCardName = gameByGameCode.setofcardname;
     this.setOfCardID = gameByGameCode.setofcard_id;
+    this.gameName = gameByGameCode.gamename;
 
     // Changing values in setOfCards depending on SoC-id
     if (this.setOfCardID == 1) {
