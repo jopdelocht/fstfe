@@ -54,7 +54,7 @@ export class UserService {
   }
 
   // get all users by gamecode
-  async getUsersByGameCode(gamecode: number) {
+  async getUsersByGameCode(gamecode: string) {
     const response = await fetch('http://127.0.0.1:8000/api/users-by-gamecode/' + gamecode);
     const usersByGameCode = await response.json();
     return usersByGameCode;

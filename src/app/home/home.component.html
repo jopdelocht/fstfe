@@ -1,10 +1,22 @@
-<div class="container d-flex justify-content-center align-items-center">
-    <div *ngIf="isLoggedIn">
-        <h1>Welcome back, {{username}}.</h1>
+<div *ngIf="isLoggedIn">
+    <div class="login-container">
+        <div class="home-left-container">
+            <h4>Welcome back,</h4>
+        </div>
+        <div class="home-right-container">
+            <h3>{{username}}.</h3>
+        </div>
     </div>
-    <div *ngIf="!isLoggedIn">
-        <h1>Welcome to Festimate.</h1>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+</div>
+<div *ngIf="!isLoggedIn">
+    <div class="logout-container">
+        <div class="home-top-container">
+            <h1>Welcome to</h1>
+        </div>
+        <div class="home-center-container">
+            <h2>Festimate</h2>
+        </div>
+        <div class="home-bottom-container">
             <button class="btn btn-secondary mt-2" type="submit" (click)="goToLogin()">Login</button>
         </div>
     </div>

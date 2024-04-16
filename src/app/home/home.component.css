@@ -6,25 +6,67 @@ Sky Blue: #6BC7F0
 Navy Blue: #191825
 */
 
+.logout-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+}
 
 h1 {
-    text-align: center;
-    margin-top: 12rem;
+    color: #E54758;
+    font-family: 'Assistant';
+    font-weight: 300;
+    font-size: 2.5rem;
+}
+
+h2 {
+    color: #191825;
+    font-family: "Libre Caslon Text";
+    font-size: 4rem;
+    font-weight: 700;
+
+}
+
+h3 {
     color: #191825;
     font-family: 'Assistant';
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-left: 0.5rem;
+}
+
+h4 {
+    color: #191825;
+    font-family: 'Assistant';
+    font-weight: 300;
+    font-size: 2.5rem;
 }
 
 
+
+
 .btn-secondary {
-    --bs-btn-color: white;
-    --bs-btn-bg: #E54758;
-    --bs-btn-border-color: none;
+    --bs-btn-color: #E54758;
+    --bs-btn-bg: #white;
+    --bs-btn-border-color: #E54758;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #d03847;
+    --bs-btn-hover-bg: #E54758;
     --bs-btn-hover-border-color: none;
     --bs-btn-focus-shadow-rgb: 130, 138, 145;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #d03847;
+    --bs-btn-active-bg: #E54758;
     --bs-btn-active-border-color: none;
     --bs-btn-active-shadow: none;
     --bs-btn-disabled-color: none;
